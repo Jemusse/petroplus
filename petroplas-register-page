@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PEROPLUS - Registo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 90%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #007bff;
+      font-size: 24px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>PEROPLUS - Registo</h1>
+    <form id="registerForm">
+      <label for="invite">Código de Convite</label>
+      <input type="text" id="invite" name="invite" required />
+      <label for="phone">Número de Telefone</label>
+      <input type="tel" id="phone" name="phone" required />
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" required />
+      <button type="submit">Registar</button>
+    </form>
+    <div class="footer">
+      &copy; 2025 PEROPLUS. Todos os direitos reservados.
+    </div>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const inviteCode = urlParams.get('invite_code');
+      if (inviteCode) {
+        document.getElementById('invite').value = inviteCode;
+      }
+    };
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Registo submetido com sucesso!');
+    });
+  </script>
+</body>
+</html>
