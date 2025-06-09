@@ -3,124 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Painel do Usuário - PEROPLUS</title>
+  <title>Painel - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #007bff;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .container {
+      background: #f5f5f5;
       padding: 20px;
       max-width: 600px;
-      margin: auto;
-    }
-
-    .card {
+      margin: 40px auto;
       background: white;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      margin-bottom: 20px;
+      text-align: center;
     }
 
-    h2 {
+    h1 {
       color: #333;
     }
 
+    .info {
+      margin: 20px 0;
+      font-size: 18px;
+      color: #555;
+    }
+
     button {
-      padding: 12px;
-      width: 100%;
+      padding: 12px 20px;
       font-size: 16px;
-      font-weight: bold;
+      background-color: #dc3545;
       color: white;
-      background-color: #007bff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 30px;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #c82333;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>PEROPLUS - Painel do Usuário</h1>
-  </header>
-
-  <div class="container">
-    <div class="card">
-      <h2>Olá, <span id="nomeUsuario"></span>!</h2>
-      <p>Telefone: <span id="telefoneUsuario"></span></p>
-    </div>
-
-    <div class="card">
-      <h3>Recarga</h3>
-      <input type="number" id="valorRecarga" placeholder="Digite o valor (MZN)" />
-      <button onclick="fazerRecarga()">Recarregar</button>
-    </div>
-
-    <div class="card">
-      <h3>Rendimento Diário</h3>
-      <p>Baseado na sua recarga, seu rendimento diário é:</p>
-      <p><strong><span id="rendimento"></span> MZN</strong></p>
-    </div>
-
-    <div class="card">
-      <h3>Atendimento ao Cliente</h3>
-      <a href="https://wa.me/258840000000" target="_blank">
-        <button>Falar com Suporte</button>
-      </a>
-    </div>
-
-    <div class="card">
-      <button onclick="logout()">Sair</button>
-    </div>
-  </div>
+  <h1>Bem-vindo(a) ao Painel PEROPLUS</h1>
+  <div id="userInfo" class="info"></div>
+  <button id="logoutBtn">Sair</button>
 
   <script>
-    const usuario = JSON.parse(localStorage.getItem('usuario_atual'));
-    if (!usuario) {
-      alert('Sessão expirada. Faça login novamente.');
-      window.location.href = 'index.html';
+    // Verifica se tem usuário logado
+    const telefoneLogado = localStorage.getItem('loggedInUser');
+
+    if (!telefoneLogado) {
+      alert('Sessão expirada! Por favor, faça login novamente.');
+      window.location.href = 'index.html'; // Volta para login
     } else {
-      document.getElementById('nomeUsuario').textContent = usuario.nome;
-      document.getElementById('telefoneUsuario').textContent = usuario.telefone;
-      document.getElementById('rendimento').textContent = calcularRendimento(usuario.recarga || 0);
-    }
+      // Busca os dados do usuário
+      const userStr = localStorage.getItem('user_' + telefoneLogado);
+      if (!userStr) {
+        alert('Usuário não encontrado. Faça login novamente.');
+        localStorage.removeItem('loggedInUser');
+        window.location.href = 'index.html';
+      } else {
+        const user = JSON.parse(userStr);
+        const userInfoDiv = document.getElementById('userInfo');
 
-    function fazerRecarga() {
-      const valor = parseFloat(document.getElementById('valorRecarga').value);
-      if (!valor || valor <= 0) {
-        alert('Digite um valor válido.');
-        return;
+        userInfoDiv.innerHTML = `
+          <p><strong>Nome:</strong> ${user.nome}</p>
+          <p><strong>Telefone:</strong> ${user.telefone}</p>
+          <p><strong>Código de convite:</strong> ${user.codigo || 'Nenhum'}</p>
+        `;
       }
-      usuario.recarga = valor;
-      localStorage.setItem('usuario_atual', JSON.stringify(usuario));
-      alert('Recarga efetuada com sucesso!');
-      document.getElementById('rendimento').textContent = calcularRendimento(valor);
     }
 
-    function calcularRendimento(valor) {
-      return (valor * 0.10).toFixed(2); // 10% ao dia como exemplo
-    }
-
-    function logout() {
-      localStorage.removeItem('usuario_atual');
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.removeItem('loggedInUser');
+      alert('Você saiu da sua conta.');
       window.location.href = 'index.html';
-    }
+    });
   </script>
 </body>
 </html>
