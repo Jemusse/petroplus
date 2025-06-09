@@ -3,27 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PEROPLUS - Login & Registo</title>
+  <title>PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 40px 20px;
     }
 
     .container {
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
       max-width: 400px;
-      width: 100%;
+      margin: auto;
       padding: 30px;
-      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     h2 {
@@ -50,66 +45,85 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
     }
 
     button:hover {
       background-color: #0056b3;
     }
 
-    .toggle-btn {
-      background: none;
-      color: #007bff;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
-      margin-top: 15px;
+    .link {
+      margin-top: 20px;
+      display: block;
+      color: #28a745;
+      text-decoration: none;
     }
 
-    .hidden {
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    #painel {
       display: none;
+      margin-top: 30px;
+    }
+
+    .painel-info {
+      text-align: left;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Login Section -->
-    <div id="loginSection">
-      <h2>Entrar na PEROPLUS</h2>
-      <form id="loginForm">
-        <input type="tel" id="loginTelefone" placeholder="Telefone" required />
-        <input type="password" id="loginSenha" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarRegisto()">Não tens conta? Criar conta</button>
-    </div>
+  <div class="container" id="registo">
+    <h2>Criar conta na PEROPLUS</h2>
+    <form id="registerForm">
+      <input type="text" id="nome" placeholder="Nome completo" required />
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="password" id="senha" placeholder="Senha" required />
+      <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
+      <button type="submit">Criar conta</button>
+    </form>
+    <a class="link" href="#" onclick="mostrarLogin()">Já tens conta? Entrar</a>
+  </div>
 
-    <!-- Registo Section -->
-    <div id="registerSection" class="hidden">
-      <h2>Criar conta na PEROPLUS</h2>
-      <form id="registerForm">
-        <input type="text" id="nome" placeholder="Nome completo" required />
-        <input type="tel" id="telefone" placeholder="Telefone" required />
-        <input type="password" id="senha" placeholder="Senha" required />
-        <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
-        <button type="submit">Criar conta</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarLogin()">Já tens conta? Entrar</button>
+  <div class="container" id="login" style="display:none">
+    <h2>Entrar na PEROPLUS</h2>
+    <form id="loginForm">
+      <input type="tel" id="loginTelefone" placeholder="Telefone" required />
+      <input type="password" id="loginSenha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <a class="link" href="#" onclick="mostrarRegisto()">Ainda não tens conta? Criar conta</a>
+  </div>
+
+  <div class="container" id="painel">
+    <h2>Bem-vindo à PEROPLUS</h2>
+    <div class="painel-info">
+      <p><strong>Nome:</strong> <span id="infoNome"></span></p>
+      <p><strong>Telefone:</strong> <span id="infoTelefone"></span></p>
+      <p><strong>Saldo:</strong> 0.00 MZN</p>
+      <p><strong>Rendimento diário:</strong> 0.00 MZN</p>
+      <p><strong>Conta bancária:</strong> —</p>
+      <p><strong>Recarga:</strong> <a href="#">Fazer Recarga</a></p>
+      <p><strong>Atendimento ao cliente:</strong> <a href="mailto:suporte@peroplus.com">suporte@peroplus.com</a></p>
+      <button onclick="logout()">Sair</button>
     </div>
   </div>
 
   <script>
-    const loginSection = document.getElementById('loginSection');
-    const registerSection = document.getElementById('registerSection');
-
-    function mostrarRegisto() {
-      loginSection.classList.add('hidden');
-      registerSection.classList.remove('hidden');
+    function mostrarLogin() {
+      document.getElementById('registo').style.display = 'none';
+      document.getElementById('login').style.display = 'block';
     }
 
-    function mostrarLogin() {
-      registerSection.classList.add('hidden');
-      loginSection.classList.remove('hidden');
+    function mostrarRegisto() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('registo').style.display = 'block';
+    }
+
+    function logout() {
+      document.getElementById('painel').style.display = 'none';
+      mostrarLogin();
     }
 
     document.getElementById('registerForm').addEventListener('submit', function(e) {
@@ -122,7 +136,7 @@
       const user = { nome, telefone, senha, codigo };
       localStorage.setItem('user_' + telefone, JSON.stringify(user));
 
-      alert('Conta criada com sucesso!');
+      alert('Conta criada com sucesso! Agora podes fazer login.');
       mostrarLogin();
     });
 
@@ -134,8 +148,10 @@
       const user = JSON.parse(localStorage.getItem('user_' + telefone));
 
       if (user && user.senha === senha) {
-        alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
-        // redirecionar para a página principal
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('painel').style.display = 'block';
+        document.getElementById('infoNome').textContent = user.nome;
+        document.getElementById('infoTelefone').textContent = user.telefone;
       } else {
         alert('Telefone ou senha incorretos.');
       }
