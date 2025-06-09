@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registo - PEROPLUS</title>
+  <title>Login - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f0f0f0;
       text-align: center;
       padding: 40px 20px;
     }
@@ -65,15 +65,31 @@
 </head>
 <body>
   <div class="container">
-    <h2>Criar conta na PEROPLUS</h2>
-    <form>
-      <input type="text" placeholder="Nome completo" required />
-      <input type="tel" placeholder="Telefone" required />
-      <input type="password" placeholder="Senha" required />
-      <input type="text" placeholder="Código de convite (opcional)" />
-      <button type="submit">Criar conta</button>
+    <h2>Entrar na PEROPLUS</h2>
+    <form id="loginForm">
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="password" id="senha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
     </form>
-    <a class="link" href="login.html">Já tens conta? Entrar</a>
+    <a class="link" href="index.html">Ainda não tens conta? Criar</a>
   </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const telefone = document.getElementById('telefone').value;
+      const senha = document.getElementById('senha').value;
+
+      const user = JSON.parse(localStorage.getItem('user_' + telefone));
+
+      if (user && user.senha === senha) {
+        alert('Login bem-sucedido!');
+        // Redirecionar para a dashboard ou página principal
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Telefone ou senha incorretos.');
+      }
+    });
+  </script>
 </body>
 </html>
