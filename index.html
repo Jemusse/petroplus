@@ -1,98 +1,146 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Painel do Usuário - PEROPLUS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PEROPLUS - Login & Registo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f0f2f5;
       margin: 0;
       padding: 0;
-      background-color: #f8f9fa;
-    }
-
-    header {
-      background-color: #007bff;
-      color: white;
-      padding: 20px;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     .container {
-      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+      padding: 30px;
+      text-align: center;
     }
 
-    .card {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    h2 {
       margin-bottom: 20px;
-    }
-
-    .card h3 {
-      margin-top: 0;
       color: #333;
     }
 
-    .menu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .menu button {
-      flex: 1;
-      padding: 15px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
       font-size: 16px;
-      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
 
-    .menu button:hover {
-      background-color: #218838;
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .toggle-btn {
+      background: none;
+      color: #007bff;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 15px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Bem-vindo à PEROPLUS</h1>
-    <p id="userNome"></p>
-  </header>
-
   <div class="container">
-    <div class="card">
-      <h3>Saldo Atual:</h3>
-      <p><strong id="saldo">0 MZN</strong></p>
+    <!-- Login Section -->
+    <div id="loginSection">
+      <h2>Entrar na PEROPLUS</h2>
+      <form id="loginForm">
+        <input type="tel" id="loginTelefone" placeholder="Telefone" required />
+        <input type="password" id="loginSenha" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+      <button class="toggle-btn" onclick="mostrarRegisto()">Não tens conta? Criar conta</button>
     </div>
 
-    <div class="card">
-      <h3>Menu</h3>
-      <div class="menu">
-        <button onclick="alert('Atendimento ao Cliente em breve')">Atendimento</button>
-        <button onclick="alert('Recarregar em breve')">Recarga</button>
-        <button onclick="alert('Conta bancária em breve')">Conta Bancária</button>
-        <button onclick="alert('Rendimento diário em breve')">Rendimento Diário</button>
-      </div>
+    <!-- Registo Section -->
+    <div id="registerSection" class="hidden">
+      <h2>Criar conta na PEROPLUS</h2>
+      <form id="registerForm">
+        <input type="text" id="nome" placeholder="Nome completo" required />
+        <input type="tel" id="telefone" placeholder="Telefone" required />
+        <input type="password" id="senha" placeholder="Senha" required />
+        <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
+        <button type="submit">Criar conta</button>
+      </form>
+      <button class="toggle-btn" onclick="mostrarLogin()">Já tens conta? Entrar</button>
     </div>
   </div>
 
   <script>
-    // Obter usuário logado
-    const telefoneLogado = localStorage.getItem('telefone_logado');
-    const usuario = JSON.parse(localStorage.getItem('user_' + telefoneLogado));
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
 
-    if (!usuario) {
-      alert('Usuário não autenticado. Redirecionando para login...');
-      window.location.href = 'index.html';
-    } else {
-      document.getElementById('userNome').textContent = 'Olá, ' + usuario.nome;
-      document.getElementById('saldo').textContent = usuario.saldo ? usuario.saldo + ' MZN' : '0 MZN';
+    function mostrarRegisto() {
+      loginSection.classList.add('hidden');
+      registerSection.classList.remove('hidden');
     }
+
+    function mostrarLogin() {
+      registerSection.classList.add('hidden');
+      loginSection.classList.remove('hidden');
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const senha = document.getElementById('senha').value;
+      const codigo = document.getElementById('codigo').value;
+
+      const user = { nome, telefone, senha, codigo };
+      localStorage.setItem('user_' + telefone, JSON.stringify(user));
+
+      alert('Conta criada com sucesso!');
+      mostrarLogin();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const telefone = document.getElementById('loginTelefone').value;
+      const senha = document.getElementById('loginSenha').value;
+
+      const user = JSON.parse(localStorage.getItem('user_' + telefone));
+
+      if (user && user.senha === senha) {
+        localStorage.setItem('usuarioLogado', telefone);
+        alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
+        window.location.href = 'painel.html';
+      } else {
+        alert('Telefone ou senha incorretos.');
+      }
+    });
   </script>
 </body>
 </html>
