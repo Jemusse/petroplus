@@ -1,52 +1,49 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PEROPLUS - Login & Registo</title>
+  <title>Painel do Usuário - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
 
-    .container {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-      padding: 30px;
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
       text-align: center;
     }
 
-    h2 {
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
       margin-bottom: 20px;
+    }
+
+    h2 {
       color: #333;
     }
 
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
     button {
+      padding: 12px;
       width: 100%;
-      padding: 14px;
-      background-color: #007bff;
-      color: white;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
+      color: white;
+      background-color: #007bff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -56,91 +53,74 @@
     button:hover {
       background-color: #0056b3;
     }
-
-    .toggle-btn {
-      background: none;
-      color: #007bff;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
-      margin-top: 15px;
-    }
-
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>PEROPLUS - Painel do Usuário</h1>
+  </header>
+
   <div class="container">
-    <!-- Login Section -->
-    <div id="loginSection">
-      <h2>Entrar na PEROPLUS</h2>
-      <form id="loginForm">
-        <input type="tel" id="loginTelefone" placeholder="Telefone" required />
-        <input type="password" id="loginSenha" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarRegisto()">Não tens conta? Criar conta</button>
+    <div class="card">
+      <h2>Olá, <span id="nomeUsuario"></span>!</h2>
+      <p>Telefone: <span id="telefoneUsuario"></span></p>
     </div>
 
-    <!-- Registo Section -->
-    <div id="registerSection" class="hidden">
-      <h2>Criar conta na PEROPLUS</h2>
-      <form id="registerForm">
-        <input type="text" id="nome" placeholder="Nome completo" required />
-        <input type="tel" id="telefone" placeholder="Telefone" required />
-        <input type="password" id="senha" placeholder="Senha" required />
-        <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
-        <button type="submit">Criar conta</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarLogin()">Já tens conta? Entrar</button>
+    <div class="card">
+      <h3>Recarga</h3>
+      <input type="number" id="valorRecarga" placeholder="Digite o valor (MZN)" />
+      <button onclick="fazerRecarga()">Recarregar</button>
+    </div>
+
+    <div class="card">
+      <h3>Rendimento Diário</h3>
+      <p>Baseado na sua recarga, seu rendimento diário é:</p>
+      <p><strong><span id="rendimento"></span> MZN</strong></p>
+    </div>
+
+    <div class="card">
+      <h3>Atendimento ao Cliente</h3>
+      <a href="https://wa.me/258840000000" target="_blank">
+        <button>Falar com Suporte</button>
+      </a>
+    </div>
+
+    <div class="card">
+      <button onclick="logout()">Sair</button>
     </div>
   </div>
 
   <script>
-    const loginSection = document.getElementById('loginSection');
-    const registerSection = document.getElementById('registerSection');
-
-    function mostrarRegisto() {
-      loginSection.classList.add('hidden');
-      registerSection.classList.remove('hidden');
+    const usuario = JSON.parse(localStorage.getItem('usuario_atual'));
+    if (!usuario) {
+      alert('Sessão expirada. Faça login novamente.');
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+      document.getElementById('telefoneUsuario').textContent = usuario.telefone;
+      document.getElementById('rendimento').textContent = calcularRendimento(usuario.recarga || 0);
     }
 
-    function mostrarLogin() {
-      registerSection.classList.add('hidden');
-      loginSection.classList.remove('hidden');
-    }
-
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const senha = document.getElementById('senha').value;
-      const codigo = document.getElementById('codigo').value;
-
-      const user = { nome, telefone, senha, codigo };
-      localStorage.setItem('user_' + telefone, JSON.stringify(user));
-
-      alert('Conta criada com sucesso!');
-      mostrarLogin();
-    });
-
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const telefone = document.getElementById('loginTelefone').value;
-      const senha = document.getElementById('loginSenha').value;
-
-      const user = JSON.parse(localStorage.getItem('user_' + telefone));
-
-      if (user && user.senha === senha) {
-        localStorage.setItem('usuarioLogado', telefone);
-        alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
-        window.location.href = 'painel.html';
-      } else {
-        alert('Telefone ou senha incorretos.');
+    function fazerRecarga() {
+      const valor = parseFloat(document.getElementById('valorRecarga').value);
+      if (!valor || valor <= 0) {
+        alert('Digite um valor válido.');
+        return;
       }
-    });
+      usuario.recarga = valor;
+      localStorage.setItem('usuario_atual', JSON.stringify(usuario));
+      alert('Recarga efetuada com sucesso!');
+      document.getElementById('rendimento').textContent = calcularRendimento(valor);
+    }
+
+    function calcularRendimento(valor) {
+      return (valor * 0.10).toFixed(2); // 10% ao dia como exemplo
+    }
+
+    function logout() {
+      localStorage.removeItem('usuario_atual');
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
 </html>
