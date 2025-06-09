@@ -1,96 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PEROPLUS - Registo</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-    }
-    h1 {
-      margin-bottom: 20px;
-      color: #007bff;
-      font-size: 24px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 12px;
-      width: 100%;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #555;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>PEROPLUS - Registo</h1>
-    <form id="registerForm">
-      <label for="invite">Código de Convite</label>
-      <input type="text" id="invite" name="invite" required />
-      <label for="phone">Número de Telefone</label>
-      <input type="tel" id="phone" name="phone" required />
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password" required />
-      <button type="submit">Registar</button>
-    </form>
-    <div class="footer">
-      &copy; 2025 PEROPLUS. Todos os direitos reservados.
-    </div>
-  </div>
-
-  <script>
-    window.onload = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const inviteCode = urlParams.get('invite_code');
-      if (inviteCode) {
-        document.getElementById('invite').value = inviteCode;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PEROPLUS - Cadastro</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
       }
-    };
 
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Registo submetido com sucesso!');
-    });
-  </script>
-</body>
+      .container {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 30px 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #00ffcc;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #00ffcc;
+        color: #000;
+        border: none;
+        padding: 14px;
+        width: 100%;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 6px;
+        margin-top: 10px;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background-color: #00ddb2;
+      }
+
+      .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      .logo {
+        margin-bottom: 15px;
+      }
+
+      .invite-note {
+        margin: 10px 0;
+        font-size: 14px;
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="https://img.icons8.com/color/96/000000/money-bag.png" alt="PEROPLUS Logo"/>
+      </div>
+      <h1>PEROPLUS</h1>
+      <p>Registre-se para começar a ganhar!</p>
+
+      <form id="register-form">
+        <input type="text" id="nome" placeholder="Seu nome" required />
+        <input type="tel" id="telefone" placeholder="Número de telefone" required />
+        <input type="text" id="codigo" placeholder="Código de convite" value="961281" readonly />
+        <button type="submit">Registrar</button>
+      </form>
+
+      <div class="invite-note">Código de convite: 961281</div>
+
+      <div class="footer">
+        © 2025 PEROPLUS. Todos os direitos reservados.
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("register-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Registro enviado com sucesso!\nEm breve entraremos em contato via WhatsApp.");
+        // Aqui você pode integrar com WhatsApp API ou enviar os dados para um backend
+      });
+    </script>
+  </body>
 </html>
