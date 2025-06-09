@@ -3,210 +3,547 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PEROPLUS - Login, Registo e Painel</title>
+<title>PEROPLUS - Plataforma de Investimentos</title>
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: #f5f5f5;
+    margin: 0; padding: 0;
   }
-  .container {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    max-width: 400px;
-    width: 100%;
-    padding: 30px;
-    text-align: center;
-  }
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  input {
-    width: 90%;
-    padding: 12px;
-    margin: 10px 0;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  button {
-    width: 100%;
-    padding: 14px;
+  header {
     background-color: #007bff;
     color: white;
-    font-size: 18px;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 24px;
+  }
+  nav {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+  }
+  nav button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: white;
     font-weight: bold;
-    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+  }
+  nav button:hover, nav button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  main {
+    max-width: 700px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
     border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
   }
-  button:hover {
-    background-color: #0056b3;
-  }
-  .toggle-btn {
-    background: none;
-    color: #007bff;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-top: 15px;
-  }
-  .hidden {
+  .section {
     display: none;
   }
-  #logoutBtn {
-    background-color: #dc3545;
+  .section.active {
+    display: block;
   }
-  #logoutBtn:hover {
-    background-color: #c82333;
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+  }
+  button.submit-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button.submit-btn:hover {
+    background-color: #0056b3;
+  }
+  .info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+  }
+  .error {
+    color: red;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+  }
+  .close-btn {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
 
-<div class="container">
-  
-  <!-- LOGIN -->
-  <div id="loginSection">
-    <h2>Entrar na PEROPLUS</h2>
+<header>PEROPLUS - Plataforma de Investimentos</header>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeLogin">&times;</span>
+    <h2>Login</h2>
     <form id="loginForm">
-      <input type="tel" id="loginTelefone" placeholder="Telefone" required />
-      <input type="password" id="loginSenha" placeholder="Senha" required />
-      <button type="submit">Entrar</button>
+      <label for="loginTelefone">Telefone:</label>
+      <input type="text" id="loginTelefone" required />
+      <label for="loginSenha">Senha:</label>
+      <input type="password" id="loginSenha" required />
+      <button type="submit" class="submit-btn">Entrar</button>
     </form>
-    <button class="toggle-btn" id="goToRegisterBtn">Não tens conta? Criar conta</button>
+    <p>Não tem conta? <a href="#" id="openRegister">Criar Conta</a></p>
+    <div id="loginMsg" class="info"></div>
   </div>
-
-  <!-- REGISTRO -->
-  <div id="registerSection" class="hidden">
-    <h2>Criar conta na PEROPLUS</h2>
-    <form id="registerForm">
-      <input type="text" id="nome" placeholder="Nome completo" required />
-      <input type="tel" id="telefone" placeholder="Telefone" required />
-      <input type="password" id="senha" placeholder="Senha" required />
-      <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
-      <button type="submit">Criar conta</button>
-    </form>
-    <button class="toggle-btn" id="goToLoginBtn">Já tens conta? Entrar</button>
-  </div>
-
-  <!-- PAINEL -->
-  <div id="painelSection" class="hidden">
-    <h2>Bem-vindo(a) ao seu Painel PEROPLUS</h2>
-    <p id="userInfo"></p>
-    <button id="logoutBtn">Sair</button>
-  </div>
-
 </div>
 
+<!-- Register Modal -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeRegister">&times;</span>
+    <h2>Criar Conta</h2>
+    <form id="registerForm">
+      <label for="regNome">Nome Completo:</label>
+      <input type="text" id="regNome" required />
+      <label for="regTelefone">Telefone:</label>
+      <input type="text" id="regTelefone" required />
+      <label for="regSenha">Senha (mín 6 chars):</label>
+      <input type="password" id="regSenha" required />
+      <button type="submit" class="submit-btn">Registrar</button>
+    </form>
+    <div id="registerMsg" class="info"></div>
+  </div>
+</div>
+
+<!-- Painel do Usuário -->
+<nav id="userNav" style="display:none;">
+  <button class="tab-btn active" data-target="saldo">Saldo</button>
+  <button class="tab-btn" data-target="recarga">Recarga</button>
+  <button class="tab-btn" data-target="dados">Dados Bancários</button>
+  <button class="tab-btn" data-target="projetos">Projetos</button>
+  <button class="tab-btn" data-target="retirada">Retirada</button>
+  <button class="tab-btn" data-target="investimentos">Meus Investimentos</button>
+  <button class="tab-btn" data-target="sobre">Sobre Nós</button>
+  <button class="tab-btn" data-target="ganhar">Como Ganhar</button>
+  <button class="tab-btn" data-target="alterarSenha">Alterar Senha</button>
+  <button style="margin-left:auto; background:#dc3545; color:white; border:none; cursor:pointer;" id="logoutBtn">Sair</button>
+</nav>
+
+<main id="userMain" style="display:none;">
+  <!-- Saldo -->
+  <section id="saldo" class="section active">
+    <h2>Saldo Atual</h2>
+    <p>MT <span id="saldoValor">0</span></p>
+  </section>
+
+  <!-- Recarga -->
+  <section id="recarga" class="section">
+    <h2>Recarga</h2>
+    <label for="recargaValor">Valor a recarregar (Mts):</label>
+    <input type="number" id="recargaValor" min="10" placeholder="Ex: 100" />
+    <button class="submit-btn" onclick="fazerRecarga()">Recargar</button>
+    <div id="recargaMsg" class="info"></div>
+  </section>
+
+  <!-- Dados Bancários -->
+  <section id="dados" class="section">
+    <h2>Dados Bancários</h2>
+    <form id="dadosForm">
+      <label for="banco">Banco:</label>
+      <input type="text" id="banco" required />
+      <label for="conta">Número da Conta:</label>
+      <input type="text" id="conta" required />
+      <label for="titular">Nome do Titular:</label>
+      <input type="text" id="titular" required />
+      <button class="submit-btn" type="submit">Salvar Dados</button>
+    </form>
+    <div id="dadosMsg" class="info"></div>
+  </section>
+
+  <!-- Projetos -->
+  <section id="projetos" class="section">
+    <h2>Projetos</h2>
+    <p>Veja aqui os projetos disponíveis para investir:</p>
+    <ul id="listaProjetos">
+      <li>Projeto A - Retorno: 10% ao mês</li>
+      <li>Projeto B - Retorno: 15% ao mês</li>
+      <li>Projeto C - Retorno: 20% ao mês</li>
+    </ul>
+  </section>
+
+  <!-- Retirada -->
+  <section id="retirada" class="section">
+    <h2>Solicitar Retirada</h2>
+    <label for="retiradaValor">Valor a retirar (Mts):</label>
+    <input type="number" id="retiradaValor" min="10" placeholder="Ex: 50" />
+    <button class="submit-btn" onclick="solicitarRetirada()">Solicitar Retirada</button>
+    <div id="retiradaMsg" class="info"></div>
+  </section>
+
+  <!-- Meus Investimentos -->
+  <section id="investimentos" class="section">
+    <h2>Meus Investimentos</h2>
+    <table>
+      <thead>
+        <tr><th>Projeto</th><th>Valor Investido (Mts)</th><th>Data</th></tr>
+      </thead>
+      <tbody id="investimentosList">
+        <!-- Lista vai ser gerada pelo JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Sobre Nós -->
+  <section id="sobre" class="section">
+    <h2>Sobre Nós</h2>
+    <p>PEROPLUS é uma plataforma segura e confiável para seus investimentos.</p>
+  </section>
+
+  <!-- Como Ganhar -->
+  <section id="ganhar" class="section">
+    <h2>Como Ganhar</h2>
+    <p>Invista em nossos projetos e receba rendimentos diários garantidos.</p>
+  </section>
+
+  <!-- Alterar Senha -->
+  <section id="alterarSenha" class="section">
+    <h2>Alterar Senha</h2>
+    <form id="alterarSenhaForm">
+      <label for="senhaAtual">Senha Atual:</label>
+      <input type="password" id="senhaAtual" required />
+      <label for="novaSenha">Nova Senha:</label>
+      <input type="password" id="novaSenha" required />
+      <label for="confirmaSenha">Confirmar Nova Senha:</label>
+      <input type="password" id="confirmaSenha" required />
+      <button class="submit-btn" type="submit">Alterar Senha</button>
+    </form>
+    <div id="senhaMsg" class="info"></div>
+  </section>
+</main>
+
 <script>
-  const loginSection = document.getElementById('loginSection');
-  const registerSection = document.getElementById('registerSection');
-  const painelSection = document.getElementById('painelSection');
+  // Variáveis globais
+  let usuarioLogado = null;
 
-  const goToRegisterBtn = document.getElementById('goToRegisterBtn');
-  const goToLoginBtn = document.getElementById('goToLoginBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
+  // Mostrar modais
+  const loginModal = document.getElementById('loginModal');
+  const registerModal = document.getElementById('registerModal');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const loginMsg = document.getElementById('loginMsg');
+  const registerMsg = document.getElementById('registerMsg');
 
-  function showLogin() {
-    loginSection.classList.remove('hidden');
-    registerSection.classList.add('hidden');
-    painelSection.classList.add('hidden');
+  // Abrir registro a partir do login
+  document.getElementById('openRegister').onclick = (e) => {
+    e.preventDefault();
+    loginModal.style.display = 'none';
+    registerModal.style.display = 'block';
+    loginMsg.textContent = '';
+    registerMsg.textContent = '';
+  };
+
+  // Fechar modais
+  document.getElementById('closeLogin').onclick = () => loginModal.style.display = 'none';
+  document.getElementById('closeRegister').onclick = () => registerModal.style.display = 'none';
+
+  // Mostrar login inicialmente
+  function mostrarLogin() {
+    loginModal.style.display = 'block';
+    registerModal.style.display = 'none';
   }
 
-  function showRegister() {
-    loginSection.classList.add('hidden');
-    registerSection.classList.remove('hidden');
-    painelSection.classList.add('hidden');
+  // Mostrar painel usuário
+  function mostrarPainel() {
+    loginModal.style.display = 'none';
+    registerModal.style.display = 'none';
+    document.getElementById('userNav').style.display = 'flex';
+    document.getElementById('userMain').style.display = 'block';
+    carregarDadosUsuario();
+    carregarInvestimentos();
+    carregarDadosBancarios();
+    mostrarSecao('saldo');
   }
 
-  function showPainel() {
-    loginSection.classList.add('hidden');
-    registerSection.classList.add('hidden');
-    painelSection.classList.remove('hidden');
+  // Função para mostrar seção (abas)
+  const tabs = document.querySelectorAll('nav#userNav button.tab-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      mostrarSecao(tab.dataset.target);
+      limparMensagens();
+    });
+  });
+
+  function mostrarSecao(id) {
+    document.querySelectorAll('main#userMain section.section').forEach(sec => {
+      sec.classList.remove('active');
+    });
+    const s = document.getElementById(id);
+    if (s) s.classList.add('active');
   }
 
-  // Alternar telas
-  goToRegisterBtn.addEventListener('click', showRegister);
-  goToLoginBtn.addEventListener('click', showLogin);
+  function limparMensagens() {
+    document.querySelectorAll('.info').forEach(el => {
+      el.textContent = '';
+      el.className = 'info';
+    });
+  }
 
   // Registro
-  document.getElementById('registerForm').addEventListener('submit', function(e){
+  registerForm.addEventListener('submit', e => {
     e.preventDefault();
-    const nome = document.getElementById('nome').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
-    const senha = document.getElementById('senha').value.trim();
-    const codigo = document.getElementById('codigo').value.trim();
-
-    if(localStorage.getItem('user_' + telefone)){
-      alert('Já existe uma conta com esse telefone.');
+    const nome = document.getElementById('regNome').value.trim();
+    const telefone = document.getElementById('regTelefone').value.trim();
+    const senha = document.getElementById('regSenha').value;
+    if (senha.length < 6) {
+      registerMsg.textContent = 'Senha deve ter pelo menos 6 caracteres.';
+      registerMsg.className = 'info error';
       return;
     }
-
-    const user = { nome, telefone, senha, codigo };
-    localStorage.setItem('user_' + telefone, JSON.stringify(user));
-
-    alert('Conta criada com sucesso! Agora podes fazer login.');
-    showLogin();
+    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    if (usuarios.some(u => u.telefone === telefone)) {
+      registerMsg.textContent = 'Telefone já cadastrado.';
+      registerMsg.className = 'info error';
+      return;
+    }
+    usuarios.push({ nome, telefone, senha });
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    registerMsg.textContent = 'Registro realizado com sucesso! Faça login.';
+    registerMsg.className = 'info';
+    registerForm.reset();
   });
 
   // Login
-  document.getElementById('loginForm').addEventListener('submit', function(e){
+  loginForm.addEventListener('submit', e => {
     e.preventDefault();
     const telefone = document.getElementById('loginTelefone').value.trim();
-    const senha = document.getElementById('loginSenha').value.trim();
-
-    const user = JSON.parse(localStorage.getItem('user_' + telefone));
-    if(user && user.senha === senha){
-      localStorage.setItem('loggedInUser', telefone);
-      alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
-      loadPainel();
-    } else {
-      alert('Telefone ou senha incorretos.');
+    const senha = document.getElementById('loginSenha').value;
+    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    let user = usuarios.find(u => u.telefone === telefone && u.senha === senha);
+    if (!user) {
+      loginMsg.textContent = 'Telefone ou senha incorretos.';
+      loginMsg.className = 'info error';
+      return;
     }
+    usuarioLogado = user;
+    localStorage.setItem('usuarioLogado', JSON.stringify(user));
+    loginMsg.textContent = '';
+    mostrarPainel();
+    atualizarSaldoNaTela();
   });
 
-  // Carregar painel
-  function loadPainel(){
-    const telefone = localStorage.getItem('loggedInUser');
-    if(!telefone){
-      alert('Sessão expirada. Faça login novamente.');
-      showLogin();
-      return;
+  // Verifica se já está logado
+  window.onload = () => {
+    const u = localStorage.getItem('usuarioLogado');
+    if (u) {
+      usuarioLogado = JSON.parse(u);
+      mostrarPainel();
+      atualizarSaldoNaTela();
+    } else {
+      mostrarLogin();
     }
-    const user = JSON.parse(localStorage.getItem('user_' + telefone));
-    if(!user){
-      alert('Usuário não encontrado. Faça login novamente.');
-      localStorage.removeItem('loggedInUser');
-      showLogin();
-      return;
-    }
-    document.getElementById('userInfo').innerText = `Olá, ${user.nome}! Seu telefone: ${user.telefone}`;
-    showPainel();
-  }
+  };
 
   // Logout
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('loggedInUser');
-    alert('Você saiu da conta.');
-    showLogin();
+  document.getElementById('logoutBtn').onclick = () => {
+    usuarioLogado = null;
+    localStorage.removeItem('usuarioLogado');
+    document.getElementById('userNav').style.display = 'none';
+    document.getElementById('userMain').style.display = 'none';
+    mostrarLogin();
+  };
+
+  // Saldo e recarga
+  function saldoKey() {
+    return 'saldo_' + usuarioLogado.telefone;
+  }
+  function atualizarSaldoNaTela() {
+    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
+    document.getElementById('saldoValor').textContent = saldo.toFixed(2);
+  }
+  function fazerRecarga() {
+    limparMensagens();
+    let valor = parseFloat(document.getElementById('recargaValor').value);
+    const msg = document.getElementById('recargaMsg');
+    if (isNaN(valor) || valor < 10) {
+      msg.textContent = 'Valor mínimo de recarga é 10 Mts.';
+      msg.className = 'info error';
+      return;
+    }
+    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
+    saldo += valor;
+    localStorage.setItem(saldoKey(), saldo.toString());
+    msg.textContent = `Recarga de MT ${valor.toFixed(2)} efetuada com sucesso!`;
+    msg.className = 'info';
+    document.getElementById('recargaValor').value = '';
+    atualizarSaldoNaTela();
+  }
+
+  // Dados bancários
+  const dadosForm = document.getElementById('dadosForm');
+  const dadosMsg = document.getElementById('dadosMsg');
+  dadosForm.addEventListener('submit', e => {
+    e.preventDefault();
+    limparMensagens();
+    const banco = document.getElementById('banco').value.trim();
+    const conta = document.getElementById('conta').value.trim();
+    const titular = document.getElementById('titular').value.trim();
+    if (!banco || !conta || !titular) {
+      dadosMsg.textContent = 'Preencha todos os campos.';
+      dadosMsg.className = 'info error';
+      return;
+    }
+    const key = 'dadosBancarios_' + usuarioLogado.telefone;
+    const dados = { banco, conta, titular };
+    localStorage.setItem(key, JSON.stringify(dados));
+    dadosMsg.textContent = 'Dados bancários salvos com sucesso!';
+    dadosMsg.className = 'info';
   });
 
-  // Ao abrir a página, verifica se tem sessão
-  window.onload = () => {
-    if(localStorage.getItem('loggedInUser')){
-      loadPainel();
-    } else {
-      showLogin();
+  function carregarDadosBancarios() {
+    const key = 'dadosBancarios_' + usuarioLogado.telefone;
+    const dados = JSON.parse(localStorage.getItem(key));
+    if (dados) {
+      document.getElementById('banco').value = dados.banco;
+      document.getElementById('conta').value = dados.conta;
+      document.getElementById('titular').value = dados.titular;
     }
+  }
+
+  // Projetos - estático no HTML
+
+  // Retirada
+  function solicitarRetirada() {
+    limparMensagens();
+    let valor = parseFloat(document.getElementById('retiradaValor').value);
+    const msg = document.getElementById('retiradaMsg');
+    if (isNaN(valor) || valor < 10) {
+      msg.textContent = 'Valor mínimo para retirada é 10 Mts.';
+      msg.className = 'info error';
+      return;
+    }
+    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
+    if (valor > saldo) {
+      msg.textContent = 'Saldo insuficiente para essa retirada.';
+      msg.className = 'info error';
+      return;
+    }
+    // Debitar saldo
+    saldo -= valor;
+    localStorage.setItem(saldoKey(), saldo.toString());
+    atualizarSaldoNaTela();
+
+    // Para simplicidade, a retirada é só simulada, poderia salvar o pedido no localStorage
+    msg.textContent = `Solicitação de retirada de MT ${valor.toFixed(2)} registrada.`;
+    msg.className = 'info';
+    document.getElementById('retiradaValor').value = '';
+  }
+
+  // Meus Investimentos
+  function carregarInvestimentos() {
+    const tbody = document.getElementById('investimentosList');
+    tbody.innerHTML = '';
+    const key = 'investimentos_' + usuarioLogado.telefone;
+    const investimentos = JSON.parse(localStorage.getItem(key)) || [];
+    investimentos.forEach(inv => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${inv.projeto}</td><td>${inv.valor.toFixed(2)}</td><td>${inv.data}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Alterar senha
+  const alterarSenhaForm = document.getElementById('alterarSenhaForm');
+  const senhaMsg = document.getElementById('senhaMsg');
+  alterarSenhaForm.addEventListener('submit', e => {
+    e.preventDefault();
+    limparMensagens();
+    const atual = document.getElementById('senhaAtual').value;
+    const novaS = document.getElementById('novaSenha').value;
+    const confirma = document.getElementById('confirmaSenha').value;
+
+    if (atual !== usuarioLogado.senha) {
+      senhaMsg.textContent = 'Senha atual incorreta.';
+      senhaMsg.className = 'info error';
+      return;
+    }
+    if (novaS.length < 6) {
+      senhaMsg.textContent = 'A nova senha deve ter no mínimo 6 caracteres.';
+      senhaMsg.className = 'info error';
+      return;
+    }
+    if (novaS !== confirma) {
+      senhaMsg.textContent = 'A confirmação da nova senha não coincide.';
+      senhaMsg.className = 'info error';
+      return;
+    }
+
+    // Atualiza senha no usuário logado e no armazenamento
+    usuarioLogado.senha = novaS;
+    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+
+    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    usuarios = usuarios.map(u => {
+      if (u.telefone === usuarioLogado.telefone) u.senha = novaS;
+      return u;
+    });
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    senhaMsg.textContent = 'Senha alterada com sucesso!';
+    senhaMsg.className = 'info';
+    alterarSenhaForm.reset();
+  });
+
+  // Carrega dados do usuário e atualiza saldo
+  function carregarDadosUsuario() {
+    atualizarSaldoNaTela();
   }
 </script>
 
