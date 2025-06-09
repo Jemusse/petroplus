@@ -1,109 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>PEROPLUS - Cadastro</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registo - PEROPLUS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 40px 20px;
+    }
 
-      .container {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 30px 20px;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 400px;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-        text-align: center;
-      }
+    .container {
+      background: white;
+      max-width: 400px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-      h1 {
-        margin-bottom: 20px;
-        color: #00ffcc;
-      }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
 
-      input {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-      }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
-      button {
-        background-color: #00ffcc;
-        color: #000;
-        border: none;
-        padding: 14px;
-        width: 100%;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 6px;
-        margin-top: 10px;
-        transition: 0.3s;
-      }
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-      button:hover {
-        background-color: #00ddb2;
-      }
+    button:hover {
+      background-color: #0056b3;
+    }
 
-      .footer {
-        margin-top: 20px;
-        font-size: 14px;
-        color: #aaa;
-      }
+    .link {
+      margin-top: 20px;
+      display: block;
+      color: #28a745;
+      text-decoration: none;
+    }
 
-      .logo {
-        margin-bottom: 15px;
-      }
-
-      .invite-note {
-        margin: 10px 0;
-        font-size: 14px;
-        color: #ccc;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="logo">
-        <img src="https://img.icons8.com/color/96/000000/money-bag.png" alt="PEROPLUS Logo"/>
-      </div>
-      <h1>PEROPLUS</h1>
-      <p>Registre-se para começar a ganhar!</p>
-
-      <form id="register-form">
-        <input type="text" id="nome" placeholder="Seu nome" required />
-        <input type="tel" id="telefone" placeholder="Número de telefone" required />
-        <input type="text" id="codigo" placeholder="Código de convite" value="961281" readonly />
-        <button type="submit">Registrar</button>
-      </form>
-
-      <div class="invite-note">Código de convite: 961281</div>
-
-      <div class="footer">
-        © 2025 PEROPLUS. Todos os direitos reservados.
-      </div>
-    </div>
-
-    <script>
-      document.getElementById("register-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        alert("Registro enviado com sucesso!\nEm breve entraremos em contato via WhatsApp.");
-        // Aqui você pode integrar com WhatsApp API ou enviar os dados para um backend
-      });
-    </script>
-  </body>
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Criar conta na PEROPLUS</h2>
+    <form>
+      <input type="text" placeholder="Nome completo" required />
+      <input type="tel" placeholder="Telefone" required />
+      <input type="password" placeholder="Senha" required />
+      <input type="text" placeholder="Código de convite (opcional)" />
+      <button type="submit">Criar conta</button>
+    </form>
+    <a class="link" href="login.html">Já tens conta? Entrar</a>
+  </div>
+</body>
 </html>
