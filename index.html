@@ -48,7 +48,7 @@
     }
 
     button:hover {
-      background-color: #218838;
+      background-color: #1e7e34;
     }
 
     .link {
@@ -61,52 +61,40 @@
     .link:hover {
       text-decoration: underline;
     }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Entrar na PEROPLUS</h2>
     <form id="loginForm">
-      <div class="error" id="errorMsg"></div>
       <input type="tel" id="telefone" placeholder="Telefone" required />
       <input type="password" id="senha" placeholder="Senha" required />
       <button type="submit">Entrar</button>
     </form>
-    <a class="link" href="register.html">Não tens conta? Criar agora</a>
-    <a class="link" href="recuperar.html">Esqueceste a senha?</a>
+    <a class="link" href="index.html">Ainda não tens conta? Criar conta</a>
   </div>
 
   <script>
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const telefone = document.getElementById('telefone').value.trim();
-      const senha = document.getElementById('senha').value.trim();
-      const errorMsg = document.getElementById('errorMsg');
+      const telefone = document.getElementById('telefone').value;
+      const senha = document.getElementById('senha').value;
 
-      if (telefone.length < 7) {
-        errorMsg.textContent = 'Por favor, insira um número de telefone válido.';
-        return;
-      }
-      if (senha.length < 6) {
-        errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+      const userData = localStorage.getItem('user_' + telefone);
+
+      if (!userData) {
+        alert('Usuário não encontrado. Verifica o número de telefone.');
         return;
       }
 
-      const user = JSON.parse(localStorage.getItem('user_' + telefone));
+      const user = JSON.parse(userData);
 
-      if (!user || user.senha !== senha) {
-        errorMsg.textContent = 'Telefone ou senha incorretos. Tente novamente.';
+      if (user.senha !== senha) {
+        alert('Senha incorreta.');
         return;
       }
 
-      // Armazenar sessão simulada
-      localStorage.setItem('user_session', telefone);
+      alert('Login bem-sucedido! Redirecionando para o painel.');
       window.location.href = 'painel.html';
     });
   </script>
