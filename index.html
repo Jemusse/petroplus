@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PEROPLUS</title>
+  <title>Login - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -38,7 +38,7 @@
     button {
       width: 100%;
       padding: 14px;
-      background-color: #007bff;
+      background-color: #28a745;
       color: white;
       font-size: 18px;
       font-weight: bold;
@@ -48,13 +48,13 @@
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #218838;
     }
 
     .link {
       margin-top: 20px;
       display: block;
-      color: #28a745;
+      color: #007bff;
       text-decoration: none;
     }
 
@@ -62,99 +62,52 @@
       text-decoration: underline;
     }
 
-    #painel {
-      display: none;
-      margin-top: 30px;
-    }
-
-    .painel-info {
-      text-align: left;
-      margin-top: 20px;
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="registo">
-    <h2>Criar conta na PEROPLUS</h2>
-    <form id="registerForm">
-      <input type="text" id="nome" placeholder="Nome completo" required />
-      <input type="tel" id="telefone" placeholder="Telefone" required />
-      <input type="password" id="senha" placeholder="Senha" required />
-      <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
-      <button type="submit">Criar conta</button>
-    </form>
-    <a class="link" href="#" onclick="mostrarLogin()">Já tens conta? Entrar</a>
-  </div>
-
-  <div class="container" id="login" style="display:none">
+  <div class="container">
     <h2>Entrar na PEROPLUS</h2>
     <form id="loginForm">
-      <input type="tel" id="loginTelefone" placeholder="Telefone" required />
-      <input type="password" id="loginSenha" placeholder="Senha" required />
+      <div class="error" id="errorMsg"></div>
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="password" id="senha" placeholder="Senha" required />
       <button type="submit">Entrar</button>
     </form>
-    <a class="link" href="#" onclick="mostrarRegisto()">Ainda não tens conta? Criar conta</a>
-  </div>
-
-  <div class="container" id="painel">
-    <h2>Bem-vindo à PEROPLUS</h2>
-    <div class="painel-info">
-      <p><strong>Nome:</strong> <span id="infoNome"></span></p>
-      <p><strong>Telefone:</strong> <span id="infoTelefone"></span></p>
-      <p><strong>Saldo:</strong> 0.00 MZN</p>
-      <p><strong>Rendimento diário:</strong> 0.00 MZN</p>
-      <p><strong>Conta bancária:</strong> —</p>
-      <p><strong>Recarga:</strong> <a href="#">Fazer Recarga</a></p>
-      <p><strong>Atendimento ao cliente:</strong> <a href="mailto:suporte@peroplus.com">suporte@peroplus.com</a></p>
-      <button onclick="logout()">Sair</button>
-    </div>
+    <a class="link" href="register.html">Não tens conta? Criar agora</a>
+    <a class="link" href="recuperar.html">Esqueceste a senha?</a>
   </div>
 
   <script>
-    function mostrarLogin() {
-      document.getElementById('registo').style.display = 'none';
-      document.getElementById('login').style.display = 'block';
-    }
-
-    function mostrarRegisto() {
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('registo').style.display = 'block';
-    }
-
-    function logout() {
-      document.getElementById('painel').style.display = 'none';
-      mostrarLogin();
-    }
-
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const senha = document.getElementById('senha').value;
-      const codigo = document.getElementById('codigo').value;
-
-      const user = { nome, telefone, senha, codigo };
-      localStorage.setItem('user_' + telefone, JSON.stringify(user));
-
-      alert('Conta criada com sucesso! Agora podes fazer login.');
-      mostrarLogin();
-    });
-
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const telefone = document.getElementById('loginTelefone').value;
-      const senha = document.getElementById('loginSenha').value;
+      const telefone = document.getElementById('telefone').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (telefone.length < 7) {
+        errorMsg.textContent = 'Por favor, insira um número de telefone válido.';
+        return;
+      }
+      if (senha.length < 6) {
+        errorMsg.textContent = 'A senha deve ter pelo menos 6 caracteres.';
+        return;
+      }
 
       const user = JSON.parse(localStorage.getItem('user_' + telefone));
 
-      if (user && user.senha === senha) {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('painel').style.display = 'block';
-        document.getElementById('infoNome').textContent = user.nome;
-        document.getElementById('infoTelefone').textContent = user.telefone;
-      } else {
-        alert('Telefone ou senha incorretos.');
+      if (!user || user.senha !== senha) {
+        errorMsg.textContent = 'Telefone ou senha incorretos. Tente novamente.';
+        return;
       }
+
+      // Armazenar sessão simulada
+      localStorage.setItem('user_session', telefone);
+      window.location.href = 'painel.html';
     });
   </script>
 </body>
