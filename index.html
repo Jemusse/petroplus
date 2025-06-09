@@ -1,551 +1,404 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>PEROPLUS - Plataforma de Investimentos</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 0; padding: 0;
-  }
-  header {
-    background-color: #007bff;
-    color: white;
-    padding: 15px 20px;
-    text-align: center;
-    font-size: 24px;
-  }
-  nav {
-    display: flex;
-    background: white;
-    border-bottom: 1px solid #ddd;
-    overflow-x: auto;
-  }
-  nav button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    background: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 14px;
-  }
-  nav button:hover, nav button.active {
-    background-color: #007bff;
-    color: white;
-  }
-  main {
-    max-width: 700px;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  .section {
-    display: none;
-  }
-  .section.active {
-    display: block;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-  }
-  button.submit-btn {
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  button.submit-btn:hover {
-    background-color: #0056b3;
-  }
-  .info {
-    margin-top: 10px;
-    font-size: 14px;
-    color: green;
-  }
-  .error {
-    color: red;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  table, th, td {
-    border: 1px solid #ddd;
-  }
-  th, td {
-    padding: 8px;
-    text-align: left;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PEROPLUS - Sistema de Usuário</title>
+  <style>
+    /* RESET básico */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+    }
 
-  /* Modal styles */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-  }
-  .modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-  }
-  .close-btn {
-    float: right;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-</style>
+    /* Contêiner principal */
+    #app {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+      overflow: hidden;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: #006400;
+      color: white;
+      padding: 15px 20px;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    /* Navegação das abas */
+    nav {
+      display: flex;
+      background: #eee;
+      border-bottom: 1px solid #ccc;
+    }
+    nav button {
+      flex: 1;
+      padding: 12px 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: bold;
+      color: #444;
+      transition: background 0.3s, color 0.3s;
+    }
+    nav button:hover {
+      background: #c8e6c9;
+      color: #006400;
+    }
+    nav button.active {
+      background: #006400;
+      color: white;
+    }
+
+    /* Conteúdo das abas */
+    section.tab-content {
+      display: none;
+      padding: 20px;
+    }
+    section.tab-content.active {
+      display: block;
+    }
+
+    /* Formulários e inputs */
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin: 12px 0 5px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #006400;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004d00;
+    }
+
+    /* Mensagens de info/erro */
+    .info {
+      text-align: center;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .info.error {
+      color: #d00000;
+    }
+    .info.success {
+      color: #006400;
+    }
+
+    /* Lista investimentos */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+
+    /* Footer simples */
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
 
-<header>PEROPLUS - Plataforma de Investimentos</header>
+  <div id="app">
 
-<!-- Login Modal -->
-<div id="loginModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" id="closeLogin">&times;</span>
-    <h2>Login</h2>
-    <form id="loginForm">
-      <label for="loginTelefone">Telefone:</label>
-      <input type="text" id="loginTelefone" required />
-      <label for="loginSenha">Senha:</label>
-      <input type="password" id="loginSenha" required />
-      <button type="submit" class="submit-btn">Entrar</button>
-    </form>
-    <p>Não tem conta? <a href="#" id="openRegister">Criar Conta</a></p>
-    <div id="loginMsg" class="info"></div>
+    <header>
+      PEROPLUS - Sistema de Usuário
+      <button id="logoutBtn" style="float:right; background:#d00000; padding:5px 15px; font-size:1rem; border-radius:5px;">Sair</button>
+    </header>
+
+    <nav id="tabsNav">
+      <button data-tab="saldo" class="active">Saldo & Recarga</button>
+      <button data-tab="dadosBancarios">Dados Bancários</button>
+      <button data-tab="investimentos">Meus Investimentos</button>
+      <button data-tab="retirada">Solicitar Retirada</button>
+      <button data-tab="senha">Alterar Senha</button>
+    </nav>
+
+    <main>
+      <section id="saldo" class="tab-content active">
+        <h2>Saldo Atual</h2>
+        <p><strong>MT <span id="saldoValor">0.00</span></strong></p>
+        <form id="recargaForm">
+          <label for="recargaValor">Valor para recarga (mínimo 10 Mts)</label>
+          <input type="number" id="recargaValor" min="10" step="0.01" required />
+          <button type="submit">Fazer Recarga</button>
+          <p id="recargaMsg" class="info"></p>
+        </form>
+      </section>
+
+      <section id="dadosBancarios" class="tab-content">
+        <h2>Dados Bancários</h2>
+        <form id="dadosForm">
+          <label for="banco">Banco</label>
+          <input type="text" id="banco" required />
+          <label for="conta">Número da Conta</label>
+          <input type="text" id="conta" required />
+          <label for="titular">Titular da Conta</label>
+          <input type="text" id="titular" required />
+          <button type="submit">Salvar Dados</button>
+          <p id="dadosMsg" class="info"></p>
+        </form>
+      </section>
+
+      <section id="investimentos" class="tab-content">
+        <h2>Meus Investimentos</h2>
+        <table>
+          <thead>
+            <tr><th>Projeto</th><th>Valor (Mts)</th><th>Data</th></tr>
+          </thead>
+          <tbody id="investimentosList">
+            <!-- lista dinâmica -->
+          </tbody>
+        </table>
+      </section>
+
+      <section id="retirada" class="tab-content">
+        <h2>Solicitar Retirada</h2>
+        <form id="retiradaForm">
+          <label for="retiradaValor">Valor para retirada (mínimo 10 Mts)</label>
+          <input type="number" id="retiradaValor" min="10" step="0.01" required />
+          <button type="submit">Solicitar</button>
+          <p id="retiradaMsg" class="info"></p>
+        </form>
+      </section>
+
+      <section id="senha" class="tab-content">
+        <h2>Alterar Senha</h2>
+        <form id="alterarSenhaForm">
+          <label for="senhaAtual">Senha Atual</label>
+          <input type="password" id="senhaAtual" required />
+          <label for="novaSenha">Nova Senha</label>
+          <input type="password" id="novaSenha" required />
+          <label for="confirmaSenha">Confirme a Nova Senha</label>
+          <input type="password" id="confirmaSenha" required />
+          <button type="submit">Alterar Senha</button>
+          <p id="senhaMsg" class="info"></p>
+        </form>
+      </section>
+    </main>
+
   </div>
-</div>
 
-<!-- Register Modal -->
-<div id="registerModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" id="closeRegister">&times;</span>
-    <h2>Criar Conta</h2>
-    <form id="registerForm">
-      <label for="regNome">Nome Completo:</label>
-      <input type="text" id="regNome" required />
-      <label for="regTelefone">Telefone:</label>
-      <input type="text" id="regTelefone" required />
-      <label for="regSenha">Senha (mín 6 chars):</label>
-      <input type="password" id="regSenha" required />
-      <button type="submit" class="submit-btn">Registrar</button>
-    </form>
-    <div id="registerMsg" class="info"></div>
-  </div>
-</div>
+  <script>
+    // Simulação de usuário logado e dados no localStorage
+    let usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (!usuarioLogado) {
+      alert('Você não está logado! Por favor, faça login.');
+      // Aqui poderia redirecionar para a página de login
+      throw new Error('Usuário não logado');
+    }
 
-<!-- Painel do Usuário -->
-<nav id="userNav" style="display:none;">
-  <button class="tab-btn active" data-target="saldo">Saldo</button>
-  <button class="tab-btn" data-target="recarga">Recarga</button>
-  <button class="tab-btn" data-target="dados">Dados Bancários</button>
-  <button class="tab-btn" data-target="projetos">Projetos</button>
-  <button class="tab-btn" data-target="retirada">Retirada</button>
-  <button class="tab-btn" data-target="investimentos">Meus Investimentos</button>
-  <button class="tab-btn" data-target="sobre">Sobre Nós</button>
-  <button class="tab-btn" data-target="ganhar">Como Ganhar</button>
-  <button class="tab-btn" data-target="alterarSenha">Alterar Senha</button>
-  <button style="margin-left:auto; background:#dc3545; color:white; border:none; cursor:pointer;" id="logoutBtn">Sair</button>
-</nav>
+    // Navegação por abas
+    const tabs = document.querySelectorAll('#tabsNav button');
+    const sections = document.querySelectorAll('section.tab-content');
 
-<main id="userMain" style="display:none;">
-  <!-- Saldo -->
-  <section id="saldo" class="section active">
-    <h2>Saldo Atual</h2>
-    <p>MT <span id="saldoValor">0</span></p>
-  </section>
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active de todos
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
 
-  <!-- Recarga -->
-  <section id="recarga" class="section">
-    <h2>Recarga</h2>
-    <label for="recargaValor">Valor a recarregar (Mts):</label>
-    <input type="number" id="recargaValor" min="10" placeholder="Ex: 100" />
-    <button class="submit-btn" onclick="fazerRecarga()">Recargar</button>
-    <div id="recargaMsg" class="info"></div>
-  </section>
+        // Ativa clicado e seção correspondente
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
 
-  <!-- Dados Bancários -->
-  <section id="dados" class="section">
-    <h2>Dados Bancários</h2>
-    <form id="dadosForm">
-      <label for="banco">Banco:</label>
-      <input type="text" id="banco" required />
-      <label for="conta">Número da Conta:</label>
-      <input type="text" id="conta" required />
-      <label for="titular">Nome do Titular:</label>
-      <input type="text" id="titular" required />
-      <button class="submit-btn" type="submit">Salvar Dados</button>
-    </form>
-    <div id="dadosMsg" class="info"></div>
-  </section>
+        limparMensagens();
+      });
+    });
 
-  <!-- Projetos -->
-  <section id="projetos" class="section">
-    <h2>Projetos</h2>
-    <p>Veja aqui os projetos disponíveis para investir:</p>
-    <ul id="listaProjetos">
-      <li>Projeto A - Retorno: 10% ao mês</li>
-      <li>Projeto B - Retorno: 15% ao mês</li>
-      <li>Projeto C - Retorno: 20% ao mês</li>
-    </ul>
-  </section>
+    // Atualiza saldo na tela
+    function atualizarSaldo() {
+      const saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
+      document.getElementById('saldoValor').textContent = saldo.toFixed(2);
+    }
+    atualizarSaldo();
 
-  <!-- Retirada -->
-  <section id="retirada" class="section">
-    <h2>Solicitar Retirada</h2>
-    <label for="retiradaValor">Valor a retirar (Mts):</label>
-    <input type="number" id="retiradaValor" min="10" placeholder="Ex: 50" />
-    <button class="submit-btn" onclick="solicitarRetirada()">Solicitar Retirada</button>
-    <div id="retiradaMsg" class="info"></div>
-  </section>
+    // Limpa mensagens de feedback
+    function limparMensagens() {
+      document.querySelectorAll('.info').forEach(el => {
+        el.textContent = '';
+        el.classList.remove('error', 'success');
+      });
+    }
 
-  <!-- Meus Investimentos -->
-  <section id="investimentos" class="section">
-    <h2>Meus Investimentos</h2>
-    <table>
-      <thead>
-        <tr><th>Projeto</th><th>Valor Investido (Mts)</th><th>Data</th></tr>
-      </thead>
-      <tbody id="investimentosList">
-        <!-- Lista vai ser gerada pelo JS -->
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Sobre Nós -->
-  <section id="sobre" class="section">
-    <h2>Sobre Nós</h2>
-    <p>PEROPLUS é uma plataforma segura e confiável para seus investimentos.</p>
-  </section>
-
-  <!-- Como Ganhar -->
-  <section id="ganhar" class="section">
-    <h2>Como Ganhar</h2>
-    <p>Invista em nossos projetos e receba rendimentos diários garantidos.</p>
-  </section>
-
-  <!-- Alterar Senha -->
-  <section id="alterarSenha" class="section">
-    <h2>Alterar Senha</h2>
-    <form id="alterarSenhaForm">
-      <label for="senhaAtual">Senha Atual:</label>
-      <input type="password" id="senhaAtual" required />
-      <label for="novaSenha">Nova Senha:</label>
-      <input type="password" id="novaSenha" required />
-      <label for="confirmaSenha">Confirmar Nova Senha:</label>
-      <input type="password" id="confirmaSenha" required />
-      <button class="submit-btn" type="submit">Alterar Senha</button>
-    </form>
-    <div id="senhaMsg" class="info"></div>
-  </section>
-</main>
-
-<script>
-  // Variáveis globais
-  let usuarioLogado = null;
-
-  // Mostrar modais
-  const loginModal = document.getElementById('loginModal');
-  const registerModal = document.getElementById('registerModal');
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  const loginMsg = document.getElementById('loginMsg');
-  const registerMsg = document.getElementById('registerMsg');
-
-  // Abrir registro a partir do login
-  document.getElementById('openRegister').onclick = (e) => {
-    e.preventDefault();
-    loginModal.style.display = 'none';
-    registerModal.style.display = 'block';
-    loginMsg.textContent = '';
-    registerMsg.textContent = '';
-  };
-
-  // Fechar modais
-  document.getElementById('closeLogin').onclick = () => loginModal.style.display = 'none';
-  document.getElementById('closeRegister').onclick = () => registerModal.style.display = 'none';
-
-  // Mostrar login inicialmente
-  function mostrarLogin() {
-    loginModal.style.display = 'block';
-    registerModal.style.display = 'none';
-  }
-
-  // Mostrar painel usuário
-  function mostrarPainel() {
-    loginModal.style.display = 'none';
-    registerModal.style.display = 'none';
-    document.getElementById('userNav').style.display = 'flex';
-    document.getElementById('userMain').style.display = 'block';
-    carregarDadosUsuario();
-    carregarInvestimentos();
-    carregarDadosBancarios();
-    mostrarSecao('saldo');
-  }
-
-  // Função para mostrar seção (abas)
-  const tabs = document.querySelectorAll('nav#userNav button.tab-btn');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      mostrarSecao(tab.dataset.target);
+    // Recarga
+    document.getElementById('recargaForm').addEventListener('submit', e => {
+      e.preventDefault();
       limparMensagens();
+      const valorInput = document.getElementById('recargaValor');
+      const valor = parseFloat(valorInput.value);
+      const msg = document.getElementById('recargaMsg');
+      if (isNaN(valor) || valor < 10) {
+        msg.textContent = 'Valor mínimo para recarga é 10 Mts.';
+        msg.classList.add('error');
+        return;
+      }
+      let saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
+      saldo += valor;
+      localStorage.setItem('saldo_' + usuarioLogado.telefone, saldo.toString());
+      atualizarSaldo();
+      msg.textContent = `Recarga de MT ${valor.toFixed(2)} realizada com sucesso!`;
+      msg.classList.add('success');
+      valorInput.value = '';
     });
-  });
 
-  function mostrarSecao(id) {
-    document.querySelectorAll('main#userMain section.section').forEach(sec => {
-      sec.classList.remove('active');
+    // Dados bancários
+    const dadosForm = document.getElementById('dadosForm');
+    dadosForm.addEventListener('submit', e => {
+      e.preventDefault();
+      limparMensagens();
+      const banco = document.getElementById('banco').value.trim();
+      const conta = document.getElementById('conta').value.trim();
+      const titular = document.getElementById('titular').value.trim();
+      const msg = document.getElementById('dadosMsg');
+
+      if (!banco || !conta || !titular) {
+        msg.textContent = 'Preencha todos os campos.';
+        msg.classList.add('error');
+        return;
+      }
+      localStorage.setItem('dadosBancarios_' + usuarioLogado.telefone, JSON.stringify({ banco, conta, titular }));
+      msg.textContent = 'Dados bancários salvos com sucesso!';
+      msg.classList.add('success');
     });
-    const s = document.getElementById(id);
-    if (s) s.classList.add('active');
-  }
 
-  function limparMensagens() {
-    document.querySelectorAll('.info').forEach(el => {
-      el.textContent = '';
-      el.className = 'info';
+    // Carrega dados bancários ao iniciar
+    function carregarDadosBancarios() {
+      const dados = JSON.parse(localStorage.getItem('dadosBancarios_' + usuarioLogado.telefone));
+      if (dados) {
+        document.getElementById('banco').value = dados.banco;
+        document.getElementById('conta').value = dados.conta;
+        document.getElementById('titular').value = dados.titular;
+      }
+    }
+    carregarDadosBancarios();
+
+    // Investimentos
+    function carregarInvestimentos() {
+      const tbody = document.getElementById('investimentosList');
+      tbody.innerHTML = '';
+      const investimentos = JSON.parse(localStorage.getItem('investimentos_' + usuarioLogado.telefone)) || [];
+      if (investimentos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Nenhum investimento registrado.</td></tr>';
+        return;
+      }
+      investimentos.forEach(inv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${inv.projeto}</td><td>${inv.valor.toFixed(2)}</td><td>${inv.data}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    carregarInvestimentos();
+
+    // Solicitar retirada
+    document.getElementById('retiradaForm').addEventListener('submit', e => {
+      e.preventDefault();
+      limparMensagens();
+      const valorInput = document.getElementById('retiradaValor');
+      const valor = parseFloat(valorInput.value);
+      const msg = document.getElementById('retiradaMsg');
+
+      if (isNaN(valor) || valor < 10) {
+        msg.textContent = 'Valor mínimo para retirada é 10 Mts.';
+        msg.classList.add('error');
+        return;
+      }
+      let saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
+      if (valor > saldo) {
+        msg.textContent = 'Saldo insuficiente para essa retirada.';
+        msg.classList.add('error');
+        return;
+      }
+      saldo -= valor;
+      localStorage.setItem('saldo_' + usuarioLogado.telefone, saldo.toString());
+      atualizarSaldo();
+      msg.textContent = `Solicitação de retirada de MT ${valor.toFixed(2)} registrada com sucesso.`;
+      msg.classList.add('success');
+      valorInput.value = '';
     });
-  }
 
-  // Registro
-  registerForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const nome = document.getElementById('regNome').value.trim();
-    const telefone = document.getElementById('regTelefone').value.trim();
-    const senha = document.getElementById('regSenha').value;
-    if (senha.length < 6) {
-      registerMsg.textContent = 'Senha deve ter pelo menos 6 caracteres.';
-      registerMsg.className = 'info error';
-      return;
-    }
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    if (usuarios.some(u => u.telefone === telefone)) {
-      registerMsg.textContent = 'Telefone já cadastrado.';
-      registerMsg.className = 'info error';
-      return;
-    }
-    usuarios.push({ nome, telefone, senha });
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    registerMsg.textContent = 'Registro realizado com sucesso! Faça login.';
-    registerMsg.className = 'info';
-    registerForm.reset();
-  });
+    // Alterar senha
+    document.getElementById('alterarSenhaForm').addEventListener('submit', e => {
+      e.preventDefault();
+      limparMensagens();
+      const senhaAtual = document.getElementById('senhaAtual').value;
+      const novaSenha = document.getElementById('novaSenha').value;
+      const confirmaSenha = document.getElementById('confirmaSenha').value;
+      const msg = document.getElementById('senhaMsg');
 
-  // Login
-  loginForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const telefone = document.getElementById('loginTelefone').value.trim();
-    const senha = document.getElementById('loginSenha').value;
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    let user = usuarios.find(u => u.telefone === telefone && u.senha === senha);
-    if (!user) {
-      loginMsg.textContent = 'Telefone ou senha incorretos.';
-      loginMsg.className = 'info error';
-      return;
-    }
-    usuarioLogado = user;
-    localStorage.setItem('usuarioLogado', JSON.stringify(user));
-    loginMsg.textContent = '';
-    mostrarPainel();
-    atualizarSaldoNaTela();
-  });
+      if (senhaAtual !== usuarioLogado.senha) {
+        msg.textContent = 'Senha atual incorreta.';
+        msg.classList.add('error');
+        return;
+      }
+      if (novaSenha.length < 6) {
+        msg.textContent = 'A nova senha deve ter no mínimo 6 caracteres.';
+        msg.classList.add('error');
+        return;
+      }
+      if (novaSenha !== confirmaSenha) {
+        msg.textContent = 'Confirmação da senha não confere.';
+        msg.classList.add('error');
+        return;
+      }
 
-  // Verifica se já está logado
-  window.onload = () => {
-    const u = localStorage.getItem('usuarioLogado');
-    if (u) {
-      usuarioLogado = JSON.parse(u);
-      mostrarPainel();
-      atualizarSaldoNaTela();
-    } else {
-      mostrarLogin();
-    }
-  };
+      // Atualiza senha no localStorage
+      usuarioLogado.senha = novaSenha;
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      usuarios = usuarios.map(u => {
+        if (u.telefone === usuarioLogado.telefone) u.senha = novaSenha;
+        return u;
+      });
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-  // Logout
-  document.getElementById('logoutBtn').onclick = () => {
-    usuarioLogado = null;
-    localStorage.removeItem('usuarioLogado');
-    document.getElementById('userNav').style.display = 'none';
-    document.getElementById('userMain').style.display = 'none';
-    mostrarLogin();
-  };
+      msg.textContent = 'Senha alterada com sucesso!';
+      msg.classList.add('success');
 
-  // Saldo e recarga
-  function saldoKey() {
-    return 'saldo_' + usuarioLogado.telefone;
-  }
-  function atualizarSaldoNaTela() {
-    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
-    document.getElementById('saldoValor').textContent = saldo.toFixed(2);
-  }
-  function fazerRecarga() {
-    limparMensagens();
-    let valor = parseFloat(document.getElementById('recargaValor').value);
-    const msg = document.getElementById('recargaMsg');
-    if (isNaN(valor) || valor < 10) {
-      msg.textContent = 'Valor mínimo de recarga é 10 Mts.';
-      msg.className = 'info error';
-      return;
-    }
-    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
-    saldo += valor;
-    localStorage.setItem(saldoKey(), saldo.toString());
-    msg.textContent = `Recarga de MT ${valor.toFixed(2)} efetuada com sucesso!`;
-    msg.className = 'info';
-    document.getElementById('recargaValor').value = '';
-    atualizarSaldoNaTela();
-  }
-
-  // Dados bancários
-  const dadosForm = document.getElementById('dadosForm');
-  const dadosMsg = document.getElementById('dadosMsg');
-  dadosForm.addEventListener('submit', e => {
-    e.preventDefault();
-    limparMensagens();
-    const banco = document.getElementById('banco').value.trim();
-    const conta = document.getElementById('conta').value.trim();
-    const titular = document.getElementById('titular').value.trim();
-    if (!banco || !conta || !titular) {
-      dadosMsg.textContent = 'Preencha todos os campos.';
-      dadosMsg.className = 'info error';
-      return;
-    }
-    const key = 'dadosBancarios_' + usuarioLogado.telefone;
-    const dados = { banco, conta, titular };
-    localStorage.setItem(key, JSON.stringify(dados));
-    dadosMsg.textContent = 'Dados bancários salvos com sucesso!';
-    dadosMsg.className = 'info';
-  });
-
-  function carregarDadosBancarios() {
-    const key = 'dadosBancarios_' + usuarioLogado.telefone;
-    const dados = JSON.parse(localStorage.getItem(key));
-    if (dados) {
-      document.getElementById('banco').value = dados.banco;
-      document.getElementById('conta').value = dados.conta;
-      document.getElementById('titular').value = dados.titular;
-    }
-  }
-
-  // Projetos - estático no HTML
-
-  // Retirada
-  function solicitarRetirada() {
-    limparMensagens();
-    let valor = parseFloat(document.getElementById('retiradaValor').value);
-    const msg = document.getElementById('retiradaMsg');
-    if (isNaN(valor) || valor < 10) {
-      msg.textContent = 'Valor mínimo para retirada é 10 Mts.';
-      msg.className = 'info error';
-      return;
-    }
-    let saldo = parseFloat(localStorage.getItem(saldoKey())) || 0;
-    if (valor > saldo) {
-      msg.textContent = 'Saldo insuficiente para essa retirada.';
-      msg.className = 'info error';
-      return;
-    }
-    // Debitar saldo
-    saldo -= valor;
-    localStorage.setItem(saldoKey(), saldo.toString());
-    atualizarSaldoNaTela();
-
-    // Para simplicidade, a retirada é só simulada, poderia salvar o pedido no localStorage
-    msg.textContent = `Solicitação de retirada de MT ${valor.toFixed(2)} registrada.`;
-    msg.className = 'info';
-    document.getElementById('retiradaValor').value = '';
-  }
-
-  // Meus Investimentos
-  function carregarInvestimentos() {
-    const tbody = document.getElementById('investimentosList');
-    tbody.innerHTML = '';
-    const key = 'investimentos_' + usuarioLogado.telefone;
-    const investimentos = JSON.parse(localStorage.getItem(key)) || [];
-    investimentos.forEach(inv => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${inv.projeto}</td><td>${inv.valor.toFixed(2)}</td><td>${inv.data}</td>`;
-      tbody.appendChild(tr);
+      document.getElementById('alterarSenhaForm').reset();
     });
-  }
 
-  // Alterar senha
-  const alterarSenhaForm = document.getElementById('alterarSenhaForm');
-  const senhaMsg = document.getElementById('senhaMsg');
-  alterarSenhaForm.addEventListener('submit', e => {
-    e.preventDefault();
-    limparMensagens();
-    const atual = document.getElementById('senhaAtual').value;
-    const novaS = document.getElementById('novaSenha').value;
-    const confirma = document.getElementById('confirmaSenha').value;
-
-    if (atual !== usuarioLogado.senha) {
-      senhaMsg.textContent = 'Senha atual incorreta.';
-      senhaMsg.className = 'info error';
-      return;
-    }
-    if (novaS.length < 6) {
-      senhaMsg.textContent = 'A nova senha deve ter no mínimo 6 caracteres.';
-      senhaMsg.className = 'info error';
-      return;
-    }
-    if (novaS !== confirma) {
-      senhaMsg.textContent = 'A confirmação da nova senha não coincide.';
-      senhaMsg.className = 'info error';
-      return;
-    }
-
-    // Atualiza senha no usuário logado e no armazenamento
-    usuarioLogado.senha = novaS;
-    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    usuarios = usuarios.map(u => {
-      if (u.telefone === usuarioLogado.telefone) u.senha = novaS;
-      return u;
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('usuarioLogado');
+      alert('Você saiu do sistema.');
+      location.reload();
     });
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-    senhaMsg.textContent = 'Senha alterada com sucesso!';
-    senhaMsg.className = 'info';
-    alterarSenhaForm.reset();
-  });
-
-  // Carrega dados do usuário e atualiza saldo
-  function carregarDadosUsuario() {
-    atualizarSaldoNaTela();
-  }
-</script>
+  </script>
 
 </body>
 </html>
