@@ -2,107 +2,248 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel - PEROPLUS</title>
+  <title>PEROPLUS - Sistema Unificado</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
       margin: 0;
       padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .container {
-      max-width: 600px;
-      margin: 50px auto;
       background: white;
       border-radius: 10px;
       padding: 30px;
+      max-width: 400px;
+      width: 100%;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       text-align: center;
     }
-    h1 {
+    h2 {
       margin-bottom: 20px;
-      color: #333;
     }
-    .info {
-      font-size: 18px;
-      margin-bottom: 20px;
-      color: #555;
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
-    .btn {
-      display: inline-block;
-      padding: 12px 25px;
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
       background-color: #007bff;
       color: white;
-      text-decoration: none;
       font-weight: bold;
+      border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
-    .btn:hover {
-      background-color: #0056b3;
+    .toggle-btn {
+      background: none;
+      color: #007bff;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 15px;
     }
-    .welcome {
-      margin-bottom: 25px;
-      font-size: 20px;
-      color: #333;
+    .hidden {
+      display: none;
     }
-    .saldo {
-      font-size: 18px;
-      margin-bottom: 30px;
-      color: green;
-      font-weight: bold;
+    .painel {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
-    nav a {
-      margin: 0 15px;
+    .painel a {
       text-decoration: none;
       color: #007bff;
       font-weight: bold;
     }
-    nav a:hover {
-      text-decoration: underline;
+    .logout {
+      color: red;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="painelContainer">
-    <!-- Conteúdo será gerado via JavaScript -->
+  <div class="container">
+    <!-- Registro -->
+    <div id="registerSection">
+      <h2>Registo - PEROPLUS</h2>
+      <form id="registerForm">
+        <input type="text" id="nome" placeholder="Nome completo" required />
+        <input type="tel" id="telefone" placeholder="Telefone" required />
+        <input type="password" id="senha" placeholder="Senha" required />
+        <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
+        <button type="submit">Criar Conta</button>
+      </form>
+      <button class="toggle-btn" onclick="mostrarLogin()">Já tens conta? Entrar</button>
+    </div>
+
+    <!-- Login -->
+    <div id="loginSection" class="hidden">
+      <h2>Entrar - PEROPLUS</h2>
+      <form id="loginForm">
+        <input type="tel" id="loginTelefone" placeholder="Telefone" required />
+        <input type="password" id="loginSenha" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+      <button class="toggle-btn" onclick="mostrarRegisto()">Criar conta</button>
+    </div>
+
+    <!-- Painel -->
+    <div id="painelSection" class="hidden">
+      <h2>Bem-vindo(a), <span id="nomeUsuario"></span>!</h2>
+      <div>Saldo: <strong id="saldoUsuario">0.00</strong> Mts</div>
+      <div class="painel">
+        <a href="#" onclick="simularRecarga()">Fazer Recarga</a>
+        <a href="#" onclick="verHistorico()">Ver Histórico</a>
+        <a href="#" onclick="verConvidados()">Meus Convidados</a>
+        <span class="logout" onclick="logout()">Sair</span>
+      </div>
+    </div>
   </div>
 
   <script>
-    const painelContainer = document.getElementById('painelContainer');
-    const telefone = localStorage.getItem('login_telefone');
+    const regForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
 
-    if (!telefone) {
-      // Usuário não está logado
-      painelContainer.innerHTML = `
-        <p class="info">Você precisa estar logado para acessar o painel. Por favor, clique no botão abaixo para fazer login ou se registrar.</p>
-        <a href="registro.html" class="btn">Ir para Login/Registro</a>
-      `;
-    } else {
+    const registerSection = document.getElementById('registerSection');
+    const loginSection = document.getElementById('loginSection');
+    const painelSection = document.getElementById('painelSection');
+    const nomeUsuario = document.getElementById('nomeUsuario');
+    const saldoUsuario = document.getElementById('saldoUsuario');
+
+    function mostrarLogin() {
+      registerSection.classList.add('hidden');
+      loginSection.classList.remove('hidden');
+    }
+
+    function mostrarRegisto() {
+      loginSection.classList.add('hidden');
+      registerSection.classList.remove('hidden');
+    }
+
+    function mostrarPainel(user) {
+      registerSection.classList.add('hidden');
+      loginSection.classList.add('hidden');
+      painelSection.classList.remove('hidden');
+      nomeUsuario.textContent = user.nome;
+      saldoUsuario.textContent = parseFloat(user.saldo || 0).toFixed(2);
+    }
+
+    // Registro
+    regForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const senha = document.getElementById('senha').value;
+      const codigo = document.getElementById('codigo').value;
+
+      if (!/^\d{8,}$/.test(telefone)) {
+        alert("Telefone inválido.");
+        return;
+      }
+      if (senha.length < 4) {
+        alert("Senha muito curta.");
+        return;
+      }
+      if (localStorage.getItem('user_' + telefone)) {
+        alert("Telefone já registado.");
+        return;
+      }
+
+      const user = { nome, telefone, senha, codigo, saldo: 0 };
+      localStorage.setItem('user_' + telefone, JSON.stringify(user));
+      localStorage.setItem('login_telefone', telefone);
+      mostrarPainel(user);
+    });
+
+    // Login
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const telefone = document.getElementById('loginTelefone').value.trim();
+      const senha = document.getElementById('loginSenha').value;
       const user = JSON.parse(localStorage.getItem('user_' + telefone));
-      if (!user) {
-        painelContainer.innerHTML = `
-          <p class="info">Usuário não encontrado. Faça login novamente.</p>
-          <a href="registro.html" class="btn">Ir para Login/Registro</a>
-        `;
-      } else {
-        painelContainer.innerHTML = `
-          <h1>Bem-vindo(a), ${user.nome}!</h1>
-          <div class="saldo">Saldo: Mts ${user.saldo ? user.saldo.toFixed(2) : '0.00'}</div>
-          <nav>
-            <a href="recarga.html">Fazer Recarga</a>
-            <a href="historico.html">Histórico de Recargas</a>
-            <a href="convidados.html">Meus Convidados</a>
-            <a href="#" id="logoutBtn" style="color:red;">Sair</a>
-          </nav>
-        `;
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-          localStorage.removeItem('login_telefone');
-          alert('Você saiu com sucesso!');
-          window.location.href = 'registro.html';
-        });
+      if (user && user.senha === senha) {
+        localStorage.setItem('login_telefone', telefone);
+        mostrarPainel(user);
+      } else {
+        alert("Telefone ou senha incorretos.");
+      }
+    });
+
+    // Painel
+    function logout() {
+      localStorage.removeItem('login_telefone');
+      location.reload();
+    }
+
+    function simularRecarga() {
+      const telefone = localStorage.getItem('login_telefone');
+      const user = JSON.parse(localStorage.getItem('user_' + telefone));
+      const valor = prompt("Digite o valor da recarga (mínimo 10 Mts):");
+      const valorNum = parseFloat(valor);
+
+      if (isNaN(valorNum) || valorNum < 10) {
+        alert("Valor inválido.");
+        return;
+      }
+
+      user.saldo = parseFloat(user.saldo || 0) + valorNum;
+
+      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+      historico.push({ valor: valorNum, data: new Date().toLocaleString() });
+      localStorage.setItem('historico_' + telefone, JSON.stringify(historico));
+      localStorage.setItem('user_' + telefone, JSON.stringify(user));
+      saldoUsuario.textContent = user.saldo.toFixed(2);
+      alert("Recarga efetuada com sucesso.");
+    }
+
+    function verHistorico() {
+      const telefone = localStorage.getItem('login_telefone');
+      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+      if (historico.length === 0) {
+        alert("Nenhuma recarga encontrada.");
+      } else {
+        alert(historico.map(h => `Mts ${h.valor} em ${h.data}`).join('\n'));
+      }
+    }
+
+    function verConvidados() {
+      const telefone = localStorage.getItem('login_telefone');
+      const convidados = [];
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('user_')) {
+          const user = JSON.parse(localStorage.getItem(key));
+          if (user.codigo === telefone) {
+            convidados.push(user);
+          }
+        }
+      }
+
+      if (convidados.length === 0) {
+        alert("Nenhum convidado ainda.");
+      } else {
+        alert(convidados.map(u => `${u.nome} - ${u.telefone}`).join('\n'));
+      }
+    }
+
+    // Se estiver logado
+    const telefoneLogado = localStorage.getItem('login_telefone');
+    if (telefoneLogado) {
+      const user = JSON.parse(localStorage.getItem('user_' + telefoneLogado));
+      if (user) {
+        mostrarPainel(user);
       }
     }
   </script>
