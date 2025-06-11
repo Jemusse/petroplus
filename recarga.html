@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recarregar - PEROPLUS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Fazer Recarga</h2>
+    <input type="number" id="valorRecarga" placeholder="Valor (mínimo 10 Mts)" />
+    <button onclick="recarregar()">Confirmar Recarga</button>
+  </div>
+
+  <script>
+    const telefone = localStorage.getItem('login_telefone');
+    const user = JSON.parse(localStorage.getItem('user_' + telefone));
+
+    function recarregar() {
+      const valor = parseFloat(document.getElementById('valorRecarga').value);
+      if (isNaN(valor) || valor < 10) {
+        alert("Valor inválido ou menor que 10 Mts.");
+        return;
+      }
+
+      // Atualiza saldo
+      user.saldo = parseFloat(user.saldo || 0) + valor;
+
+      // Adiciona ao histórico
+      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+      historico.push({ valor, data: new Date().toLocaleString() });
+      localStorage.setItem('historico_' + telefone, JSON.stringify(historico));
+
+      // Salva dados atualizados
+      localStorage.setItem('user_' + telefone, JSON.stringify(user));
+      alert("Recarga realizada com sucesso!");
+
+      window.location.href = "painel.html";
+    }
+  </script>
+</body>
+</html>
