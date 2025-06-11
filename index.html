@@ -7,246 +7,104 @@
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
-      margin: 0; padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      margin: 0;
       padding: 20px;
     }
     .container {
+      max-width: 600px;
+      margin: 50px auto;
       background: white;
-      max-width: 450px;
-      width: 100%;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
-    h2 {
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
       text-align: center;
-      margin-bottom: 10px;
+    }
+    h1 {
+      margin-bottom: 20px;
       color: #333;
     }
-    .user-info {
-      text-align: center;
+    .info {
+      font-size: 18px;
       margin-bottom: 20px;
-      font-weight: bold;
       color: #555;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .welcome {
+      margin-bottom: 25px;
+      font-size: 20px;
+      color: #333;
     }
     .saldo {
       font-size: 18px;
-      margin-top: 5px;
+      margin-bottom: 30px;
       color: green;
-    }
-    .nav-buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-    .nav-buttons button {
-      flex: 1;
-      margin: 0 5px;
-      padding: 12px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s ease;
-    }
-    .nav-buttons button:hover {
-      background-color: #0056b3;
-    }
-    .section {
-      display: none;
-      margin-top: 10px;
-    }
-    .section.active {
-      display: block;
-    }
-    input, button[type="submit"] {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    button[type="submit"] {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
       font-weight: bold;
     }
-    button[type="submit"]:hover {
-      background-color: #218838;
-    }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-      max-height: 200px;
-      overflow-y: auto;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #fafafa;
-    }
-    li {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-      color: #333;
-    }
-    li:last-child {
-      border-bottom: none;
-    }
-    .logout-btn {
-      margin-top: 20px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      padding: 12px;
-      width: 100%;
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #007bff;
       font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
     }
-    .logout-btn:hover {
-      background-color: #c82333;
+    nav a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Painel PEROPLUS</h2>
-    <div class="user-info" id="userInfo">
-      <!-- Usuário e saldo aparecerão aqui -->
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="mostrarSecao('recarga')">Recarga</button>
-      <button onclick="mostrarSecao('historico')">Histórico</button>
-      <button onclick="mostrarSecao('convidados')">Convidados</button>
-    </div>
-
-    <!-- Seção Recarga -->
-    <div id="recarga" class="section">
-      <h3>Fazer Recarga</h3>
-      <input type="number" id="valorRecarga" placeholder="Valor (mínimo 10 Mts)" />
-      <button onclick="recarregar()">Confirmar Recarga</button>
-    </div>
-
-    <!-- Seção Histórico -->
-    <div id="historico" class="section">
-      <h3>Histórico de Recargas</h3>
-      <ul id="listaHistorico"></ul>
-    </div>
-
-    <!-- Seção Convidados -->
-    <div id="convidados" class="section">
-      <h3>Meus Convidados</h3>
-      <ul id="listaConvidados"></ul>
-    </div>
-
-    <button class="logout-btn" onclick="logout()">Sair</button>
+  <div class="container" id="painelContainer">
+    <!-- Conteúdo será gerado via JavaScript -->
   </div>
 
   <script>
-    const telefone = localStorage.getItem('sessaoAtiva');
+    const painelContainer = document.getElementById('painelContainer');
+    const telefone = localStorage.getItem('login_telefone');
+
     if (!telefone) {
-      alert('Usuário não logado! Faça login para continuar.');
-      window.location.href = 'index.html'; // ou sua página login
-    }
+      // Usuário não está logado
+      painelContainer.innerHTML = `
+        <p class="info">Você precisa estar logado para acessar o painel. Por favor, clique no botão abaixo para fazer login ou se registrar.</p>
+        <a href="registro.html" class="btn">Ir para Login/Registro</a>
+      `;
+    } else {
+      const user = JSON.parse(localStorage.getItem('user_' + telefone));
+      if (!user) {
+        painelContainer.innerHTML = `
+          <p class="info">Usuário não encontrado. Faça login novamente.</p>
+          <a href="registro.html" class="btn">Ir para Login/Registro</a>
+        `;
+      } else {
+        painelContainer.innerHTML = `
+          <h1>Bem-vindo(a), ${user.nome}!</h1>
+          <div class="saldo">Saldo: Mts ${user.saldo ? user.saldo.toFixed(2) : '0.00'}</div>
+          <nav>
+            <a href="recarga.html">Fazer Recarga</a>
+            <a href="historico.html">Histórico de Recargas</a>
+            <a href="convidados.html">Meus Convidados</a>
+            <a href="#" id="logoutBtn" style="color:red;">Sair</a>
+          </nav>
+        `;
 
-    let user = JSON.parse(localStorage.getItem('user_' + telefone));
-
-    function atualizarUserInfo() {
-      const userInfo = document.getElementById('userInfo');
-      userInfo.innerHTML = `👤 ${user.nome} <br> 📞 ${user.telefone} <br> <span class="saldo">Saldo: ${user.saldo ? user.saldo.toFixed(2) : '0.00'} Mts</span>`;
-    }
-
-    function mostrarSecao(secao) {
-      document.querySelectorAll('.section').forEach(div => {
-        div.classList.remove('active');
-      });
-      document.getElementById(secao).classList.add('active');
-
-      if (secao === 'historico') carregarHistorico();
-      if (secao === 'convidados') carregarConvidados();
-    }
-
-    // Recarga
-    function recarregar() {
-      const valorInput = document.getElementById('valorRecarga');
-      const valor = parseFloat(valorInput.value);
-      if (isNaN(valor) || valor < 10) {
-        alert("Valor inválido ou menor que 10 Mts.");
-        return;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          localStorage.removeItem('login_telefone');
+          alert('Você saiu com sucesso!');
+          window.location.href = 'registro.html';
+        });
       }
-      user.saldo = parseFloat(user.saldo || 0) + valor;
-
-      // Atualiza histórico
-      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
-      historico.push({ valor, data: new Date().toLocaleString() });
-      localStorage.setItem('historico_' + telefone, JSON.stringify(historico));
-
-      // Salva user atualizado
-      localStorage.setItem('user_' + telefone, JSON.stringify(user));
-      atualizarUserInfo();
-      valorInput.value = '';
-      alert('Recarga realizada com sucesso!');
     }
-
-    // Histórico
-    function carregarHistorico() {
-      const listaHistorico = document.getElementById('listaHistorico');
-      listaHistorico.innerHTML = '';
-      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
-      if (historico.length === 0) {
-        listaHistorico.innerHTML = '<li>Nenhuma recarga realizada.</li>';
-        return;
-      }
-      historico.slice().reverse().forEach(item => {
-        listaHistorico.innerHTML += `<li>R$ ${item.valor.toFixed(2)} - ${item.data}</li>`;
-      });
-    }
-
-    // Convidados
-    function carregarConvidados() {
-      const listaConvidados = document.getElementById('listaConvidados');
-      listaConvidados.innerHTML = '';
-
-      const convidados = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('user_')) {
-          const u = JSON.parse(localStorage.getItem(key));
-          if (u.codigo === telefone) {
-            convidados.push(u);
-          }
-        }
-      }
-
-      if (convidados.length === 0) {
-        listaConvidados.innerHTML = '<li>Nenhum convidado ainda.</li>';
-        return;
-      }
-
-      convidados.forEach(u => {
-        listaConvidados.innerHTML += `<li>📞 ${u.telefone} - 👤 ${u.nome}</li>`;
-      });
-    }
-
-    // Logout
-    function logout() {
-      localStorage.removeItem('sessaoAtiva');
-      alert('Você saiu da sua conta.');
-      window.location.href = 'index.html'; // página login
-    }
-
-    // Inicia mostrando dados do usuário e seção recarga
-    atualizarUserInfo();
-    mostrarSecao('recarga');
   </script>
 </body>
 </html>
