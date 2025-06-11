@@ -1,404 +1,214 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PEROPLUS - Sistema de Usuário</title>
-  <style>
-    /* RESET básico */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #f9f9f9;
-    }
-
-    /* Contêiner principal */
-    #app {
-      max-width: 900px;
-      margin: 30px auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
-      overflow: hidden;
-    }
-
-    /* Cabeçalho */
-    header {
-      background: #006400;
-      color: white;
-      padding: 15px 20px;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    /* Navegação das abas */
-    nav {
-      display: flex;
-      background: #eee;
-      border-bottom: 1px solid #ccc;
-    }
-    nav button {
-      flex: 1;
-      padding: 12px 0;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-weight: bold;
-      color: #444;
-      transition: background 0.3s, color 0.3s;
-    }
-    nav button:hover {
-      background: #c8e6c9;
-      color: #006400;
-    }
-    nav button.active {
-      background: #006400;
-      color: white;
-    }
-
-    /* Conteúdo das abas */
-    section.tab-content {
-      display: none;
-      padding: 20px;
-    }
-    section.tab-content.active {
-      display: block;
-    }
-
-    /* Formulários e inputs */
-    form {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    label {
-      display: block;
-      margin: 12px 0 5px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      margin-bottom: 15px;
-    }
-    button {
-      background: #006400;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #004d00;
-    }
-
-    /* Mensagens de info/erro */
-    .info {
-      text-align: center;
-      margin: 10px 0;
-      font-weight: bold;
-    }
-    .info.error {
-      color: #d00000;
-    }
-    .info.success {
-      color: #006400;
-    }
-
-    /* Lista investimentos */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background: #eee;
-    }
-
-    /* Footer simples */
-    footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 0.9rem;
-      color: #777;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PEROPLUS - Login, Registo e Painel</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+  }
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .toggle-btn {
+    background: none;
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 15px;
+  }
+  .hidden {
+    display: none;
+  }
+  #logoutBtn {
+    background-color: #dc3545;
+  }
+  #logoutBtn:hover {
+    background-color: #c82333;
+  }
+</style>
 </head>
 <body>
 
-  <div id="app">
-
-    <header>
-      PEROPLUS - Sistema de Usuário
-      <button id="logoutBtn" style="float:right; background:#d00000; padding:5px 15px; font-size:1rem; border-radius:5px;">Sair</button>
-    </header>
-
-    <nav id="tabsNav">
-      <button data-tab="saldo" class="active">Saldo & Recarga</button>
-      <button data-tab="dadosBancarios">Dados Bancários</button>
-      <button data-tab="investimentos">Meus Investimentos</button>
-      <button data-tab="retirada">Solicitar Retirada</button>
-      <button data-tab="senha">Alterar Senha</button>
-    </nav>
-
-    <main>
-      <section id="saldo" class="tab-content active">
-        <h2>Saldo Atual</h2>
-        <p><strong>MT <span id="saldoValor">0.00</span></strong></p>
-        <form id="recargaForm">
-          <label for="recargaValor">Valor para recarga (mínimo 10 Mts)</label>
-          <input type="number" id="recargaValor" min="10" step="0.01" required />
-          <button type="submit">Fazer Recarga</button>
-          <p id="recargaMsg" class="info"></p>
-        </form>
-      </section>
-
-      <section id="dadosBancarios" class="tab-content">
-        <h2>Dados Bancários</h2>
-        <form id="dadosForm">
-          <label for="banco">Banco</label>
-          <input type="text" id="banco" required />
-          <label for="conta">Número da Conta</label>
-          <input type="text" id="conta" required />
-          <label for="titular">Titular da Conta</label>
-          <input type="text" id="titular" required />
-          <button type="submit">Salvar Dados</button>
-          <p id="dadosMsg" class="info"></p>
-        </form>
-      </section>
-
-      <section id="investimentos" class="tab-content">
-        <h2>Meus Investimentos</h2>
-        <table>
-          <thead>
-            <tr><th>Projeto</th><th>Valor (Mts)</th><th>Data</th></tr>
-          </thead>
-          <tbody id="investimentosList">
-            <!-- lista dinâmica -->
-          </tbody>
-        </table>
-      </section>
-
-      <section id="retirada" class="tab-content">
-        <h2>Solicitar Retirada</h2>
-        <form id="retiradaForm">
-          <label for="retiradaValor">Valor para retirada (mínimo 10 Mts)</label>
-          <input type="number" id="retiradaValor" min="10" step="0.01" required />
-          <button type="submit">Solicitar</button>
-          <p id="retiradaMsg" class="info"></p>
-        </form>
-      </section>
-
-      <section id="senha" class="tab-content">
-        <h2>Alterar Senha</h2>
-        <form id="alterarSenhaForm">
-          <label for="senhaAtual">Senha Atual</label>
-          <input type="password" id="senhaAtual" required />
-          <label for="novaSenha">Nova Senha</label>
-          <input type="password" id="novaSenha" required />
-          <label for="confirmaSenha">Confirme a Nova Senha</label>
-          <input type="password" id="confirmaSenha" required />
-          <button type="submit">Alterar Senha</button>
-          <p id="senhaMsg" class="info"></p>
-        </form>
-      </section>
-    </main>
-
+<div class="container">
+  
+  <!-- LOGIN -->
+  <div id="loginSection">
+    <h2>Entrar na PEROPLUS</h2>
+    <form id="loginForm">
+      <input type="tel" id="loginTelefone" placeholder="Telefone" required />
+      <input type="password" id="loginSenha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <button class="toggle-btn" id="goToRegisterBtn">Não tens conta? Criar conta</button>
   </div>
 
-  <script>
-    // Simulação de usuário logado e dados no localStorage
-    let usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    if (!usuarioLogado) {
-      alert('Você não está logado! Por favor, faça login.');
-      // Aqui poderia redirecionar para a página de login
-      throw new Error('Usuário não logado');
+  <!-- REGISTRO -->
+  <div id="registerSection" class="hidden">
+    <h2>Criar conta na PEROPLUS</h2>
+    <form id="registerForm">
+      <input type="text" id="nome" placeholder="Nome completo" required />
+      <input type="tel" id="telefone" placeholder="Telefone" required />
+      <input type="password" id="senha" placeholder="Senha" required />
+      <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
+      <button type="submit">Criar conta</button>
+    </form>
+    <button class="toggle-btn" id="goToLoginBtn">Já tens conta? Entrar</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painelSection" class="hidden">
+    <h2>Bem-vindo(a) ao seu Painel PEROPLUS</h2>
+    <p id="userInfo"></p>
+    <button id="logoutBtn">Sair</button>
+  </div>
+
+</div>
+
+<script>
+  const loginSection = document.getElementById('loginSection');
+  const registerSection = document.getElementById('registerSection');
+  const painelSection = document.getElementById('painelSection');
+
+  const goToRegisterBtn = document.getElementById('goToRegisterBtn');
+  const goToLoginBtn = document.getElementById('goToLoginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function showLogin() {
+    loginSection.classList.remove('hidden');
+    registerSection.classList.add('hidden');
+    painelSection.classList.add('hidden');
+  }
+
+  function showRegister() {
+    loginSection.classList.add('hidden');
+    registerSection.classList.remove('hidden');
+    painelSection.classList.add('hidden');
+  }
+
+  function showPainel() {
+    loginSection.classList.add('hidden');
+    registerSection.classList.add('hidden');
+    painelSection.classList.remove('hidden');
+  }
+
+  // Alternar telas
+  goToRegisterBtn.addEventListener('click', showRegister);
+  goToLoginBtn.addEventListener('click', showLogin);
+
+  // Registro
+  document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const nome = document.getElementById('nome').value.trim();
+    const telefone = document.getElementById('telefone').value.trim();
+    const senha = document.getElementById('senha').value.trim();
+    const codigo = document.getElementById('codigo').value.trim();
+
+    if(localStorage.getItem('user_' + telefone)){
+      alert('Já existe uma conta com esse telefone.');
+      return;
     }
 
-    // Navegação por abas
-    const tabs = document.querySelectorAll('#tabsNav button');
-    const sections = document.querySelectorAll('section.tab-content');
+    const user = { nome, telefone, senha, codigo };
+    localStorage.setItem('user_' + telefone, JSON.stringify(user));
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Remove active de todos
-        tabs.forEach(t => t.classList.remove('active'));
-        sections.forEach(s => s.classList.remove('active'));
+    alert('Conta criada com sucesso! Agora podes fazer login.');
+    showLogin();
+  });
 
-        // Ativa clicado e seção correspondente
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
+  // Login
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const telefone = document.getElementById('loginTelefone').value.trim();
+    const senha = document.getElementById('loginSenha').value.trim();
 
-        limparMensagens();
-      });
-    });
-
-    // Atualiza saldo na tela
-    function atualizarSaldo() {
-      const saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
-      document.getElementById('saldoValor').textContent = saldo.toFixed(2);
+    const user = JSON.parse(localStorage.getItem('user_' + telefone));
+    if(user && user.senha === senha){
+      localStorage.setItem('loggedInUser', telefone);
+      alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
+      loadPainel();
+    } else {
+      alert('Telefone ou senha incorretos.');
     }
-    atualizarSaldo();
+  });
 
-    // Limpa mensagens de feedback
-    function limparMensagens() {
-      document.querySelectorAll('.info').forEach(el => {
-        el.textContent = '';
-        el.classList.remove('error', 'success');
-      });
+  // Carregar painel
+  function loadPainel(){
+    const telefone = localStorage.getItem('loggedInUser');
+    if(!telefone){
+      alert('Sessão expirada. Faça login novamente.');
+      showLogin();
+      return;
     }
-
-    // Recarga
-    document.getElementById('recargaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      limparMensagens();
-      const valorInput = document.getElementById('recargaValor');
-      const valor = parseFloat(valorInput.value);
-      const msg = document.getElementById('recargaMsg');
-      if (isNaN(valor) || valor < 10) {
-        msg.textContent = 'Valor mínimo para recarga é 10 Mts.';
-        msg.classList.add('error');
-        return;
-      }
-      let saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
-      saldo += valor;
-      localStorage.setItem('saldo_' + usuarioLogado.telefone, saldo.toString());
-      atualizarSaldo();
-      msg.textContent = `Recarga de MT ${valor.toFixed(2)} realizada com sucesso!`;
-      msg.classList.add('success');
-      valorInput.value = '';
-    });
-
-    // Dados bancários
-    const dadosForm = document.getElementById('dadosForm');
-    dadosForm.addEventListener('submit', e => {
-      e.preventDefault();
-      limparMensagens();
-      const banco = document.getElementById('banco').value.trim();
-      const conta = document.getElementById('conta').value.trim();
-      const titular = document.getElementById('titular').value.trim();
-      const msg = document.getElementById('dadosMsg');
-
-      if (!banco || !conta || !titular) {
-        msg.textContent = 'Preencha todos os campos.';
-        msg.classList.add('error');
-        return;
-      }
-      localStorage.setItem('dadosBancarios_' + usuarioLogado.telefone, JSON.stringify({ banco, conta, titular }));
-      msg.textContent = 'Dados bancários salvos com sucesso!';
-      msg.classList.add('success');
-    });
-
-    // Carrega dados bancários ao iniciar
-    function carregarDadosBancarios() {
-      const dados = JSON.parse(localStorage.getItem('dadosBancarios_' + usuarioLogado.telefone));
-      if (dados) {
-        document.getElementById('banco').value = dados.banco;
-        document.getElementById('conta').value = dados.conta;
-        document.getElementById('titular').value = dados.titular;
-      }
+    const user = JSON.parse(localStorage.getItem('user_' + telefone));
+    if(!user){
+      alert('Usuário não encontrado. Faça login novamente.');
+      localStorage.removeItem('loggedInUser');
+      showLogin();
+      return;
     }
-    carregarDadosBancarios();
+    document.getElementById('userInfo').innerText = `Olá, ${user.nome}! Seu telefone: ${user.telefone}`;
+    showPainel();
+  }
 
-    // Investimentos
-    function carregarInvestimentos() {
-      const tbody = document.getElementById('investimentosList');
-      tbody.innerHTML = '';
-      const investimentos = JSON.parse(localStorage.getItem('investimentos_' + usuarioLogado.telefone)) || [];
-      if (investimentos.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Nenhum investimento registrado.</td></tr>';
-        return;
-      }
-      investimentos.forEach(inv => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${inv.projeto}</td><td>${inv.valor.toFixed(2)}</td><td>${inv.data}</td>`;
-        tbody.appendChild(tr);
-      });
+  // Logout
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('loggedInUser');
+    alert('Você saiu da conta.');
+    showLogin();
+  });
+
+  // Ao abrir a página, verifica se tem sessão
+  window.onload = () => {
+    if(localStorage.getItem('loggedInUser')){
+      loadPainel();
+    } else {
+      showLogin();
     }
-    carregarInvestimentos();
-
-    // Solicitar retirada
-    document.getElementById('retiradaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      limparMensagens();
-      const valorInput = document.getElementById('retiradaValor');
-      const valor = parseFloat(valorInput.value);
-      const msg = document.getElementById('retiradaMsg');
-
-      if (isNaN(valor) || valor < 10) {
-        msg.textContent = 'Valor mínimo para retirada é 10 Mts.';
-        msg.classList.add('error');
-        return;
-      }
-      let saldo = parseFloat(localStorage.getItem('saldo_' + usuarioLogado.telefone)) || 0;
-      if (valor > saldo) {
-        msg.textContent = 'Saldo insuficiente para essa retirada.';
-        msg.classList.add('error');
-        return;
-      }
-      saldo -= valor;
-      localStorage.setItem('saldo_' + usuarioLogado.telefone, saldo.toString());
-      atualizarSaldo();
-      msg.textContent = `Solicitação de retirada de MT ${valor.toFixed(2)} registrada com sucesso.`;
-      msg.classList.add('success');
-      valorInput.value = '';
-    });
-
-    // Alterar senha
-    document.getElementById('alterarSenhaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      limparMensagens();
-      const senhaAtual = document.getElementById('senhaAtual').value;
-      const novaSenha = document.getElementById('novaSenha').value;
-      const confirmaSenha = document.getElementById('confirmaSenha').value;
-      const msg = document.getElementById('senhaMsg');
-
-      if (senhaAtual !== usuarioLogado.senha) {
-        msg.textContent = 'Senha atual incorreta.';
-        msg.classList.add('error');
-        return;
-      }
-      if (novaSenha.length < 6) {
-        msg.textContent = 'A nova senha deve ter no mínimo 6 caracteres.';
-        msg.classList.add('error');
-        return;
-      }
-      if (novaSenha !== confirmaSenha) {
-        msg.textContent = 'Confirmação da senha não confere.';
-        msg.classList.add('error');
-        return;
-      }
-
-      // Atualiza senha no localStorage
-      usuarioLogado.senha = novaSenha;
-      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      usuarios = usuarios.map(u => {
-        if (u.telefone === usuarioLogado.telefone) u.senha = novaSenha;
-        return u;
-      });
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-      msg.textContent = 'Senha alterada com sucesso!';
-      msg.classList.add('success');
-
-      document.getElementById('alterarSenhaForm').reset();
-    });
-
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('usuarioLogado');
-      alert('Você saiu do sistema.');
-      location.reload();
-    });
-
-  </script>
+  }
+</script>
 
 </body>
 </html>
