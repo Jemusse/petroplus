@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel de Administração - PEROPLUS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .user-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .user-card h3 {
+      margin: 0 0 10px 0;
+    }
+    .user-card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Painel de Administração - PEROPLUS</h2>
+  <div id="userList"></div>
+
+  <script>
+    function carregarUsuarios() {
+      const userListDiv = document.getElementById('userList');
+      userListDiv.innerHTML = '';
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('user_')) {
+          const user = JSON.parse(localStorage.getItem(key));
+          const historico = JSON.parse(localStorage.getItem('historico_' + user.telefone)) || [];
+
+          const convidados = [];
+          for (let j = 0; j < localStorage.length; j++) {
+            const k = localStorage.key(j);
+            if (k.startsWith('user_')) {
+              const u = JSON.parse(localStorage.getItem(k));
+              if (u.codigo === user.telefone) convidados.push(u);
+            }
+          }
+
+          const card = document.createElement('div');
+          card.className = 'user-card';
+          card.innerHTML = `
+            <h3>${user.nome} (${user.telefone})</h3>
+            <p><strong>Saldo:</strong> ${user.saldo || 0} MZN</p>
+            <p><strong>Recargas:</strong><br>${historico.map(h => `+${h.valor} MZN em ${h.data}`).join('<br>') || 'Nenhuma recarga'}</p>
+            <p><strong>Convidados:</strong><br>${convidados.map(c => `${c.nome} (${c.telefone})`).join('<br>') || 'Nenhum'}</p>
+          `;
+          userListDiv.appendChild(card);
+        }
+      }
+    }
+
+    carregarUsuarios();
+  </script>
+</body>
+</html>
