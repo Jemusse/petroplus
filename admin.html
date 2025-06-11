@@ -1,71 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Painel de Administração - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 20px;
+    }
+    .login-container, .admin-panel {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    .admin-panel {
+      display: none;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
     h2 {
-      text-align: center;
-    }
-    .user-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .user-card h3 {
-      margin: 0 0 10px 0;
-    }
-    .user-card p {
-      margin: 5px 0;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <h2>Painel de Administração - PEROPLUS</h2>
-  <div id="userList"></div>
+
+  <!-- Tela de Login -->
+  <div class="login-container" id="loginContainer">
+    <h2>Login de Administrador</h2>
+    <input type="text" id="adminUser" placeholder="Usuário" />
+    <input type="password" id="adminPass" placeholder="Senha" />
+    <button onclick="verificarAcesso()">Entrar</button>
+  </div>
+
+  <!-- Painel Administrativo -->
+  <div class="admin-panel" id="adminPanel">
+    <h2>Painel de Administração</h2>
+    <p>Aqui você pode ver os dados do sistema PEROPLUS.</p>
+    <button onclick="listarUsuarios()">Ver Todos os Usuários</button>
+    <div id="usuariosList" style="margin-top: 20px;"></div>
+  </div>
 
   <script>
-    function carregarUsuarios() {
-      const userListDiv = document.getElementById('userList');
-      userListDiv.innerHTML = '';
+    const loginContainer = document.getElementById('loginContainer');
+    const adminPanel = document.getElementById('adminPanel');
+    const usuariosList = document.getElementById('usuariosList');
 
+    const usuarioCorreto = "admin";
+    const senhaCorreta = "peroplus2025";
+
+    function verificarAcesso() {
+      const usuario = document.getElementById('adminUser').value;
+      const senha = document.getElementById('adminPass').value;
+
+      if (usuario === usuarioCorreto && senha === senhaCorreta) {
+        loginContainer.style.display = 'none';
+        adminPanel.style.display = 'block';
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    }
+
+    function listarUsuarios() {
+      usuariosList.innerHTML = "";
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key.startsWith('user_')) {
           const user = JSON.parse(localStorage.getItem(key));
-          const historico = JSON.parse(localStorage.getItem('historico_' + user.telefone)) || [];
-
-          const convidados = [];
-          for (let j = 0; j < localStorage.length; j++) {
-            const k = localStorage.key(j);
-            if (k.startsWith('user_')) {
-              const u = JSON.parse(localStorage.getItem(k));
-              if (u.codigo === user.telefone) convidados.push(u);
-            }
-          }
-
-          const card = document.createElement('div');
-          card.className = 'user-card';
-          card.innerHTML = `
-            <h3>${user.nome} (${user.telefone})</h3>
-            <p><strong>Saldo:</strong> ${user.saldo || 0} MZN</p>
-            <p><strong>Recargas:</strong><br>${historico.map(h => `+${h.valor} MZN em ${h.data}`).join('<br>') || 'Nenhuma recarga'}</p>
-            <p><strong>Convidados:</strong><br>${convidados.map(c => `${c.nome} (${c.telefone})`).join('<br>') || 'Nenhum'}</p>
-          `;
-          userListDiv.appendChild(card);
+          const item = document.createElement('div');
+          item.textContent = `${user.nome} - ${user.telefone} - MZN ${parseFloat(user.saldo || 0).toFixed(2)}`;
+          usuariosList.appendChild(item);
         }
       }
     }
-
-    carregarUsuarios();
   </script>
+
 </body>
 </html>
