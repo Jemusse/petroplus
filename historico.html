@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico de Recargas - PEROPLUS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .tabela {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>📜 Histórico de Recargas</h2>
+  <div class="tabela">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Valor (Mts)</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaHistorico">
+        <!-- Linhas preenchidas via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const telefone = localStorage.getItem('login_telefone');
+    const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+
+    const tabela = document.getElementById('tabelaHistorico');
+    if (historico.length === 0) {
+      tabela.innerHTML = "<tr><td colspan='2'>Sem recargas ainda.</td></tr>";
+    } else {
+      historico.reverse().forEach(item => {
+        const linha = `<tr><td>${item.data}</td><td>${item.valor.toFixed(2)}</td></tr>`;
+        tabela.innerHTML += linha;
+      });
+    }
+  </script>
+</body>
+</html>
