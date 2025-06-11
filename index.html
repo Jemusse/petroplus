@@ -2,47 +2,37 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel do Usuário - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background-color: #f0f2f5;
       margin: 0;
       padding: 0;
     }
-    .header {
-      background-color: #007bff;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
+    .painel {
+      max-width: 500px;
+      margin: 50px auto;
       background: white;
-      padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
     }
     h2 {
       margin-bottom: 20px;
-      text-align: center;
-    }
-    .info {
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 16px;
     }
     button {
+      display: block;
       width: 100%;
       padding: 14px;
       margin: 10px 0;
-      background-color: #007bff;
-      color: white;
       font-size: 16px;
-      font-weight: bold;
       border: none;
       border-radius: 8px;
+      background-color: #007bff;
+      color: white;
       cursor: pointer;
     }
     button:hover {
@@ -51,43 +41,24 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>PEROPLUS - Painel do Usuário</h1>
-  </div>
-
-  <div class="container" id="painel">
-    <h2>Bem-vindo(a)</h2>
-    <div class="info" id="dadosUsuario"></div>
-
-    <button onclick="irPara('recarga.html')">💰 Fazer Recarga</button>
-    <button onclick="irPara('historico.html')">📜 Histórico de Recargas</button>
-    <button onclick="irPara('convidados.html')">👥 Meus Convidados</button>
-    <button onclick="logout()">🚪 Sair</button>
+  <div class="painel">
+    <h2>Bem-vindo(a) à PEROPLUS</h2>
+    <button onclick="location.href='recarga.html'">💰 Fazer Recarga</button>
+    <button onclick="location.href='historico.html'">📜 Histórico de Recargas</button>
+    <button onclick="location.href='convidados.html'">👥 Meus Convidados</button>
+    <button onclick="logout()">🚪 Terminar Sessão</button>
   </div>
 
   <script>
     const telefone = localStorage.getItem('login_telefone');
-    if (!telefone) {
-      document.getElementById('painel').innerHTML = `
-        <p style="text-align:center;font-size:18px;color:red;">Usuário não logado. <br>
-        <button onclick=\"window.location.href='index.html'\">Fazer login</button></p>
-      `;
-    } else {
-      const user = JSON.parse(localStorage.getItem('user_' + telefone));
-      document.getElementById('dadosUsuario').innerHTML = `
-        <strong>Nome:</strong> ${user.nome}<br>
-        <strong>Telefone:</strong> ${user.telefone}<br>
-        <strong>Saldo:</strong> ${parseFloat(user.saldo || 0).toFixed(2)} Mts
-      `;
-    }
 
-    function irPara(pagina) {
-      window.location.href = pagina;
+    if (!telefone || !localStorage.getItem('user_' + telefone)) {
+      window.location.href = 'login.html';
     }
 
     function logout() {
       localStorage.removeItem('login_telefone');
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
     }
   </script>
 </body>
