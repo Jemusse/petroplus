@@ -2,163 +2,251 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PEROPLUS - Login & Registo</title>
+  <title>Painel - PEROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
     }
-
     .container {
       background: white;
+      max-width: 450px;
+      width: 100%;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-      padding: 30px;
-      text-align: center;
+      padding: 20px;
     }
-
     h2 {
-      margin-bottom: 20px;
+      text-align: center;
+      margin-bottom: 10px;
       color: #333;
     }
-
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+    .user-info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #555;
     }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #007bff;
-      color: white;
+    .saldo {
       font-size: 18px;
+      margin-top: 5px;
+      color: green;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .nav-buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 12px;
       font-weight: bold;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
     }
-
-    button:hover {
+    .nav-buttons button:hover {
       background-color: #0056b3;
     }
-
-    .toggle-btn {
-      background: none;
-      color: #007bff;
+    .section {
+      display: none;
+      margin-top: 10px;
+    }
+    .section.active {
+      display: block;
+    }
+    input, button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button[type="submit"] {
+      background-color: #28a745;
+      color: white;
       border: none;
       cursor: pointer;
-      text-decoration: underline;
-      margin-top: 15px;
+      font-weight: bold;
     }
-
-    .hidden {
-      display: none;
+    button[type="submit"]:hover {
+      background-color: #218838;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      color: #333;
+    }
+    li:last-child {
+      border-bottom: none;
+    }
+    .logout-btn {
+      margin-top: 20px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background-color: #c82333;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Login Section -->
-    <div id="loginSection">
-      <h2>Entrar na PEROPLUS</h2>
-      <form id="loginForm">
-        <input type="tel" id="loginTelefone" placeholder="Telefone" required />
-        <input type="password" id="loginSenha" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarRegisto()">Não tens conta? Criar conta</button>
+    <h2>Painel PEROPLUS</h2>
+    <div class="user-info" id="userInfo">
+      <!-- Usuário e saldo aparecerão aqui -->
     </div>
 
-    <!-- Registo Section -->
-    <div id="registerSection" class="hidden">
-      <h2>Criar conta na PEROPLUS</h2>
-      <form id="registerForm">
-        <input type="text" id="nome" placeholder="Nome completo" required />
-        <input type="tel" id="telefone" placeholder="Telefone" required />
-        <input type="password" id="senha" placeholder="Senha" required />
-        <input type="text" id="codigo" placeholder="Código de convite (opcional)" />
-        <button type="submit">Criar conta</button>
-      </form>
-      <button class="toggle-btn" onclick="mostrarLogin()">Já tens conta? Entrar</button>
+    <div class="nav-buttons">
+      <button onclick="mostrarSecao('recarga')">Recarga</button>
+      <button onclick="mostrarSecao('historico')">Histórico</button>
+      <button onclick="mostrarSecao('convidados')">Convidados</button>
     </div>
+
+    <!-- Seção Recarga -->
+    <div id="recarga" class="section">
+      <h3>Fazer Recarga</h3>
+      <input type="number" id="valorRecarga" placeholder="Valor (mínimo 10 Mts)" />
+      <button onclick="recarregar()">Confirmar Recarga</button>
+    </div>
+
+    <!-- Seção Histórico -->
+    <div id="historico" class="section">
+      <h3>Histórico de Recargas</h3>
+      <ul id="listaHistorico"></ul>
+    </div>
+
+    <!-- Seção Convidados -->
+    <div id="convidados" class="section">
+      <h3>Meus Convidados</h3>
+      <ul id="listaConvidados"></ul>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Sair</button>
   </div>
 
   <script>
-    const loginSection = document.getElementById('loginSection');
-    const registerSection = document.getElementById('registerSection');
-
-    function mostrarRegisto() {
-      loginSection.classList.add('hidden');
-      registerSection.classList.remove('hidden');
+    const telefone = localStorage.getItem('sessaoAtiva');
+    if (!telefone) {
+      alert('Usuário não logado! Faça login para continuar.');
+      window.location.href = 'index.html'; // ou sua página login
     }
 
-    function mostrarLogin() {
-      registerSection.classList.add('hidden');
-      loginSection.classList.remove('hidden');
+    let user = JSON.parse(localStorage.getItem('user_' + telefone));
+
+    function atualizarUserInfo() {
+      const userInfo = document.getElementById('userInfo');
+      userInfo.innerHTML = `👤 ${user.nome} <br> 📞 ${user.telefone} <br> <span class="saldo">Saldo: ${user.saldo ? user.saldo.toFixed(2) : '0.00'} Mts</span>`;
     }
 
-    // Validação e registo
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const senha = document.getElementById('senha').value;
-      const codigo = document.getElementById('codigo').value;
+    function mostrarSecao(secao) {
+      document.querySelectorAll('.section').forEach(div => {
+        div.classList.remove('active');
+      });
+      document.getElementById(secao).classList.add('active');
 
-      // Validação
-      if (!/^\d{8,}$/.test(telefone)) {
-        alert("Número de telefone inválido. Deve conter pelo menos 8 dígitos.");
+      if (secao === 'historico') carregarHistorico();
+      if (secao === 'convidados') carregarConvidados();
+    }
+
+    // Recarga
+    function recarregar() {
+      const valorInput = document.getElementById('valorRecarga');
+      const valor = parseFloat(valorInput.value);
+      if (isNaN(valor) || valor < 10) {
+        alert("Valor inválido ou menor que 10 Mts.");
         return;
       }
+      user.saldo = parseFloat(user.saldo || 0) + valor;
 
-      if (senha.length < 4) {
-        alert("A senha deve conter pelo menos 4 caracteres.");
-        return;
-      }
+      // Atualiza histórico
+      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+      historico.push({ valor, data: new Date().toLocaleString() });
+      localStorage.setItem('historico_' + telefone, JSON.stringify(historico));
 
-      if (localStorage.getItem('user_' + telefone)) {
-        alert("Este número de telefone já está registado.");
-        return;
-      }
-
-      const user = { nome, telefone, senha, codigo };
+      // Salva user atualizado
       localStorage.setItem('user_' + telefone, JSON.stringify(user));
+      atualizarUserInfo();
+      valorInput.value = '';
+      alert('Recarga realizada com sucesso!');
+    }
 
-      alert('Conta criada com sucesso!');
-      mostrarLogin();
-    });
-
-    // Validação e login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const telefone = document.getElementById('loginTelefone').value.trim();
-      const senha = document.getElementById('loginSenha').value;
-
-      const user = JSON.parse(localStorage.getItem('user_' + telefone));
-
-      if (user && user.senha === senha) {
-        alert('Login bem-sucedido! Bem-vindo(a) à PEROPLUS.');
-        // Redirecionar para o painel do usuário
-        window.location.href = 'painel.html';
-      } else {
-        alert('Telefone ou senha incorretos.');
+    // Histórico
+    function carregarHistorico() {
+      const listaHistorico = document.getElementById('listaHistorico');
+      listaHistorico.innerHTML = '';
+      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+      if (historico.length === 0) {
+        listaHistorico.innerHTML = '<li>Nenhuma recarga realizada.</li>';
+        return;
       }
-    });
+      historico.slice().reverse().forEach(item => {
+        listaHistorico.innerHTML += `<li>R$ ${item.valor.toFixed(2)} - ${item.data}</li>`;
+      });
+    }
+
+    // Convidados
+    function carregarConvidados() {
+      const listaConvidados = document.getElementById('listaConvidados');
+      listaConvidados.innerHTML = '';
+
+      const convidados = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('user_')) {
+          const u = JSON.parse(localStorage.getItem(key));
+          if (u.codigo === telefone) {
+            convidados.push(u);
+          }
+        }
+      }
+
+      if (convidados.length === 0) {
+        listaConvidados.innerHTML = '<li>Nenhum convidado ainda.</li>';
+        return;
+      }
+
+      convidados.forEach(u => {
+        listaConvidados.innerHTML += `<li>📞 ${u.telefone} - 👤 ${u.nome}</li>`;
+      });
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('sessaoAtiva');
+      alert('Você saiu da sua conta.');
+      window.location.href = 'index.html'; // página login
+    }
+
+    // Inicia mostrando dados do usuário e seção recarga
+    atualizarUserInfo();
+    mostrarSecao('recarga');
   </script>
 </body>
 </html>
