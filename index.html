@@ -115,7 +115,7 @@
         <p>Nome do Usuário</p>
         <p>MZN <strong>0.00</strong></p>
         <p>Saldo da Conta</p>
-        <button>Recarregar</button>
+        <button onclick="document.getElementById('recarga').scrollIntoView({ behavior: 'smooth' });">Recarregar</button>
       </div>
       <div>
         <p>MZN <strong>0.00</strong></p>
@@ -124,7 +124,7 @@
       </div>
     </div>
 
-    <div class="recarga-container">
+    <div id="recarga" class="recarga-container">
       <h2 style="text-align: center; color: #d4af37;">Recarga PETROPLUS</h2>
       <label for="metodo">Escolha o método de pagamento:</label>
       <select id="metodo">
