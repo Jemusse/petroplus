@@ -1,227 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PETROPLUS</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
-      background: #fff9db;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
+      background-color: #fff8e1;
+      margin: 0;
+      padding: 0;
     }
-    .card {
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    header {
+      background-color: #d4af37;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
     }
-    .hidden {
-      display: none;
+    main {
+      padding: 20px;
     }
-    .nav-btn {
-      width: 100%;
+    .painel {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .painel div {
+      flex: 1 1 45%;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    .painel button {
       margin-top: 10px;
+      padding: 10px;
+      background-color: #d4af37;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .recarga-container {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff8e1;
+      border-radius: 12px;
+    }
+    .recarga-container label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .recarga-container select, .recarga-container input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .amount-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .amount-btn {
+      background-color: #ffd54f;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .amount-btn:hover {
+      background-color: #ffca28;
+    }
+    .note {
+      text-align: center;
+      font-weight: bold;
+      color: #e65100;
+      margin: 20px 0;
+    }
+    .btn-confirmar {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #d4af37;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .btn-confirmar:hover {
+      background-color: #c5a233;
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <!-- Login/Registro -->
-    <div id="authSection" class="card p-4">
-      <h3 class="text-center mb-3">PETROPLUS</h3>
-      <div id="toggleAuth" class="text-center mb-3">
-        <button class="btn btn-outline-primary btn-sm" onclick="showLogin()">Login</button>
-        <button class="btn btn-outline-secondary btn-sm" onclick="showRegister()">Registrar</button>
+  <header>PETROPLUS</header>
+  <main>
+    <div class="painel">
+      <div>
+        <h3>Olá</h3>
+        <p>Nome do Usuário</p>
+        <p>MZN <strong>0.00</strong></p>
+        <p>Saldo da Conta</p>
+        <button>Recarregar</button>
       </div>
-      <div id="loginForm">
-        <input id="loginUser" type="text" placeholder="Insira o seu número" class="form-control mb-2" />
-        <input id="loginPass" type="password" placeholder="Senha" class="form-control mb-2" />
-        <button class="btn btn-primary w-100" onclick="login()">Entrar</button>
-      </div>
-      <div id="registerForm" class="hidden">
-        <input id="regUser" type="text" placeholder="Insira o seu número" class="form-control mb-2" />
-        <input id="regPass" type="password" placeholder="Senha" class="form-control mb-2" />
-        <input id="regPassConfirm" type="password" placeholder="Confirmar Senha" class="form-control mb-2" />
-        <button class="btn btn-success w-100" onclick="register()">Registrar</button>
+      <div>
+        <p>MZN <strong>0.00</strong></p>
+        <p>Valores Ganhos</p>
+        <button>Retirada</button>
       </div>
     </div>
 
-    <!-- Painel do Usuário -->
-    <div id="userPanel" class="card p-4 hidden mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <h5>Olá, <span id="userName"></span></h5>
-          <p>Saldo da Conta: <strong>MZN <span id="userBalance">0</span></strong></p>
-          <button class="btn btn-outline-primary btn-sm" onclick="showSection('recharge')">Recarregar</button>
-        </div>
-        <div>
-          <p>Ganhos: <strong>MZN <span id="userEarnings">0</span></strong></p>
-          <button class="btn btn-outline-success btn-sm" onclick="alert('Solicitação de retirada enviada!')">Retirar</button>
-        </div>
+    <div class="recarga-container">
+      <h2 style="text-align: center; color: #d4af37;">Recarga PETROPLUS</h2>
+      <label for="metodo">Escolha o método de pagamento:</label>
+      <select id="metodo">
+        <option value="mpesa">M-Pesa</option>
+        <option value="emola">e-Mola</option>
+      </select>
+
+      <label for="valor">Selecione o valor da recarga:</label>
+      <div class="amount-grid">
+        <div class="amount-btn">300 MZN</div>
+        <div class="amount-btn">600 MZN</div>
+        <div class="amount-btn">1200 MZN</div>
+        <div class="amount-btn">4500 MZN</div>
+        <div class="amount-btn">8000 MZN</div>
+        <div class="amount-btn">12000 MZN</div>
+        <div class="amount-btn">24000 MZN</div>
+        <div class="amount-btn">48000 MZN</div>
+        <div class="amount-btn">64000 MZN</div>
+        <div class="amount-btn">120000 MZN</div>
+        <div class="amount-btn">140000 MZN</div>
+        <div class="amount-btn">200000 MZN</div>
       </div>
-      <button class="btn btn-secondary nav-btn" onclick="showSection('history')">Ver Histórico</button>
-      <button class="btn btn-secondary nav-btn" onclick="showSection('guests')">Meus Convidados</button>
+
+      <p class="note">Valor mínimo de recarga: 300 MZN</p>
+
+      <button class="btn-confirmar">Confirmar Recarga</button>
     </div>
-
-    <!-- Página de Recarga -->
-    <div id="recharge" class="card p-4 hidden mt-4">
-      <h5>Recarregar Conta</h5>
-      <input id="rechargeAmount" type="number" placeholder="Valor em MZN" class="form-control mb-2" />
-      <button class="btn btn-success w-100" onclick="recharge()">Confirmar Recarga</button>
-      <button class="btn btn-link w-100" onclick="backToPanel()">Voltar</button>
-    </div>
-
-    <!-- Histórico de Recargas -->
-    <div id="history" class="card p-4 hidden mt-4">
-      <h5>Histórico de Recargas</h5>
-      <ul id="historyList" class="list-group mb-2"></ul>
-      <button class="btn btn-link w-100" onclick="backToPanel()">Voltar</button>
-    </div>
-
-    <!-- Lista de Convidados -->
-    <div id="guests" class="card p-4 hidden mt-4">
-      <h5>Meus Convidados</h5>
-      <ul id="guestList" class="list-group mb-2"></ul>
-      <button class="btn btn-link w-100" onclick="backToPanel()">Voltar</button>
-    </div>
-  </div>
-
-  <script>
-    const showLogin = () => {
-      document.getElementById('loginForm').classList.remove('hidden');
-      document.getElementById('registerForm').classList.add('hidden');
-    }
-    const showRegister = () => {
-      document.getElementById('registerForm').classList.remove('hidden');
-      document.getElementById('loginForm').classList.add('hidden');
-    }
-
-    function isValidMozNumber(num) {
-      const re = /^\+258\d{9}$/;
-      if(num.trim() === '') return true;
-      return re.test(num);
-    }
-
-    const register = () => {
-      const user = document.getElementById('regUser').value.trim();
-      const pass = document.getElementById('regPass').value;
-      const pass2 = document.getElementById('regPassConfirm').value;
-
-      if (!user || !pass || !pass2) {
-        alert('Preencha todos os campos.');
-        return;
-      }
-
-      if (!isValidMozNumber(user)) {
-        alert('Número inválido. Deve começar com +258 e conter 9 dígitos após o código.');
-        return;
-      }
-
-      if (pass !== pass2) {
-        alert('As senhas não coincidem.');
-        return;
-      }
-
-      const savedUser = localStorage.getItem('petro_user');
-      if (savedUser === user) {
-        alert('Número já registrado.');
-        return;
-      }
-
-      localStorage.setItem('petro_user', user);
-      localStorage.setItem('petro_pass', pass);
-      localStorage.setItem('petro_balance', '0');
-      localStorage.setItem('petro_earnings', '0');
-      localStorage.setItem('petro_guests', JSON.stringify([]));
-      localStorage.setItem('petro_history', JSON.stringify([]));
-
-      alert('Usuário registrado com sucesso. Faça login para continuar.');
-      showLogin();
-    }
-
-    const login = () => {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value;
-      const storedUser = localStorage.getItem('petro_user');
-      const storedPass = localStorage.getItem('petro_pass');
-
-      if (!user || !pass) {
-        alert('Preencha todos os campos.');
-        return;
-      }
-
-      if (!isValidMozNumber(user)) {
-        alert('Número inválido. Deve começar com +258 e conter 9 dígitos após o código.');
-        return;
-      }
-
-      if (user === storedUser && pass === storedPass) {
-        document.getElementById('authSection').classList.add('hidden');
-        document.getElementById('userPanel').classList.remove('hidden');
-        document.getElementById('userName').innerText = user;
-        document.getElementById('userBalance').innerText = localStorage.getItem('petro_balance');
-        document.getElementById('userEarnings').innerText = localStorage.getItem('petro_earnings');
-        updateHistoryList();
-        updateGuestList();
-      } else {
-        alert('Número ou senha incorretos.');
-      }
-    }
-
-    const showSection = (sectionId) => {
-      document.getElementById('userPanel').classList.add('hidden');
-      document.querySelectorAll('.card').forEach(card => {
-        if (card.id === sectionId) card.classList.remove('hidden');
-        else if (card.id !== 'authSection' && card.id !== 'userPanel') card.classList.add('hidden');
-      });
-    }
-
-    const backToPanel = () => {
-      document.querySelectorAll('.card').forEach(card => {
-        if (card.id !== 'authSection') card.classList.add('hidden');
-      });
-      document.getElementById('userPanel').classList.remove('hidden');
-    }
-
-    const recharge = () => {
-      const amount = parseInt(document.getElementById('rechargeAmount').value);
-      if (amount > 0) {
-        const current = parseInt(localStorage.getItem('petro_balance') || '0');
-        const history = JSON.parse(localStorage.getItem('petro_history') || '[]');
-        history.push({ date: new Date().toLocaleString(), amount });
-        localStorage.setItem('petro_balance', current + amount);
-        localStorage.setItem('petro_history', JSON.stringify(history));
-        document.getElementById('userBalance').innerText = current + amount;
-        updateHistoryList();
-        alert('Recarga realizada com sucesso!');
-        backToPanel();
-      } else {
-        alert('Digite um valor válido para recarga.');
-      }
-    }
-
-    const updateHistoryList = () => {
-      const list = document.getElementById('historyList');
-      const history = JSON.parse(localStorage.getItem('petro_history') || '[]');
-      list.innerHTML = '';
-      history.forEach(h => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.innerText = `${h.date} - MZN ${h.amount}`;
-        list.appendChild(li);
-      });
-    }
-
-    const updateGuestList = () => {
-      const list = document.getElementById('guestList');
-      const guests = JSON.parse(localStorage.getItem('petro_guests') || '[]');
-      list.innerHTML = '';
-      guests.forEach((g, i) => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.innerText = `${i + 1}. ${g}`;
-        list.appendChild(li);
-      });
-    }
-  </script>
+  </main>
 </body>
 </html>
