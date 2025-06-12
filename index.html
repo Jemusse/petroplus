@@ -2,156 +2,111 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PETROPLUS</title>
+  <title>Painel PETROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fff8e1;
+      background: #f9f9f9;
       margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #d4af37;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 24px;
-    }
-    main {
       padding: 20px;
     }
     .painel {
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 20px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .painel div {
-      flex: 1 1 45%;
-      padding: 10px;
-      background: #f9f9f9;
+    .botoes {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .botao {
+      background: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
       border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    .painel button {
+    .botao:hover {
+      background: #e65c00;
+    }
+    .projeto {
+      display: flex;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      align-items: center;
+    }
+    .projeto img {
+      width: 150px;
+      height: auto;
+      object-fit: cover;
+    }
+    .descricao {
+      padding: 15px;
+    }
+    .descricao h3 {
+      margin: 0 0 10px;
+      color: #ff6600;
+    }
+    .descricao p {
+      margin: 4px 0;
+    }
+    .valores {
+      font-weight: bold;
+      color: #007700;
       margin-top: 10px;
-      padding: 10px;
-      background-color: #d4af37;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .recarga-container {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #fff8e1;
-      border-radius: 12px;
-    }
-    .recarga-container label {
-      font-weight: bold;
-      display: block;
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-    .recarga-container select, .recarga-container input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .amount-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .amount-btn {
-      background-color: #ffd54f;
-      border: 1px solid #d4af37;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 16px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .amount-btn:hover {
-      background-color: #ffca28;
-    }
-    .note {
-      text-align: center;
-      font-weight: bold;
-      color: #e65100;
-      margin: 20px 0;
-    }
-    .btn-confirmar {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background-color: #d4af37;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 18px;
-      margin-top: 20px;
-      cursor: pointer;
-    }
-    .btn-confirmar:hover {
-      background-color: #c5a233;
     }
   </style>
 </head>
 <body>
-  <header>PETROPLUS</header>
-  <main>
-    <div class="painel">
-      <div>
-        <h3>Olá</h3>
-        <p>Nome do Usuário</p>
-        <p>MZN <strong>0.00</strong></p>
-        <p>Saldo da Conta</p>
-        <button onclick="document.getElementById('recarga').scrollIntoView({ behavior: 'smooth' });">Recarregar</button>
-      </div>
-      <div>
-        <p>MZN <strong>0.00</strong></p>
-        <p>Valores Ganhos</p>
-        <button>Retirada</button>
+  <div class="painel">
+    <div class="botoes">
+      <button class="botao" onclick="alert('Navegar para Meus Projetos')">Meus Projetos</button>
+      <button class="botao" onclick="alert('Abrir Menu')">Menu</button>
+      <button class="botao" onclick="alert('Ver Equipe')">Equipe</button>
+      <button class="botao" onclick="alert('Benefícios PETROPLUS: Lucros diários, parcerias sustentáveis, retorno garantido.')">Sobre Nós</button>
+    </div>
+
+    <!-- Projetos ordenados do maior valor para o menor -->
+    <div class="projeto">
+      <img src="https://via.placeholder.com/150x200?text=Projeto+240000" alt="Projeto">
+      <div class="descricao">
+        <h3>Projeto Energia Solar</h3>
+        <p>Duração: 90 dias</p>
+        <p>Rendimento diário: 4000 MZN</p>
+        <p>Renda total: 240000 MZN</p>
+        <div class="valores">MZN 240000</div>
       </div>
     </div>
 
-    <div id="recarga" class="recarga-container">
-      <h2 style="text-align: center; color: #d4af37;">Recarga PETROPLUS</h2>
-      <label for="metodo">Escolha o método de pagamento:</label>
-      <select id="metodo">
-        <option value="mpesa">M-Pesa</option>
-        <option value="emola">e-Mola</option>
-      </select>
-
-      <label for="valor">Selecione o valor da recarga:</label>
-      <div class="amount-grid">
-        <div class="amount-btn">300 MZN</div>
-        <div class="amount-btn">600 MZN</div>
-        <div class="amount-btn">1200 MZN</div>
-        <div class="amount-btn">4500 MZN</div>
-        <div class="amount-btn">8000 MZN</div>
-        <div class="amount-btn">12000 MZN</div>
-        <div class="amount-btn">24000 MZN</div>
-        <div class="amount-btn">48000 MZN</div>
-        <div class="amount-btn">64000 MZN</div>
-        <div class="amount-btn">120000 MZN</div>
-        <div class="amount-btn">140000 MZN</div>
-        <div class="amount-btn">200000 MZN</div>
+    <div class="projeto">
+      <img src="https://via.placeholder.com/150x200?text=Projeto+120000" alt="Projeto">
+      <div class="descricao">
+        <h3>Projeto Estufa</h3>
+        <p>Duração: 60 dias</p>
+        <p>Rendimento diário: 2000 MZN</p>
+        <p>Renda total: 120000 MZN</p>
+        <div class="valores">MZN 120000</div>
       </div>
-
-      <p class="note">Valor mínimo de recarga: 300 MZN</p>
-
-      <button class="btn-confirmar">Confirmar Recarga</button>
     </div>
-  </main>
+
+    <div class="projeto">
+      <img src="https://via.placeholder.com/150x200?text=Projeto+48000" alt="Projeto">
+      <div class="descricao">
+        <h3>Projeto Agricultura</h3>
+        <p>Duração: 45 dias</p>
+        <p>Rendimento diário: 1067 MZN</p>
+        <p>Renda total: 48000 MZN</p>
+        <div class="valores">MZN 48000</div>
+      </div>
+    </div>
+
+    <!-- Adicione mais projetos aqui com valores menores, seguindo o mesmo padrão -->
+  </div>
 </body>
 </html>
