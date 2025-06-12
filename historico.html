@@ -1,72 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Histórico de Recargas - PETROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f0f2f5;
+      margin: 0;
       padding: 20px;
     }
 
     .container {
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       background: white;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
       text-align: center;
       color: #007bff;
+      margin-bottom: 20px;
     }
 
     .registro {
-      background: #e9f0ff;
-      margin: 10px 0;
-      padding: 10px 15px;
-      border-left: 5px solid #007bff;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 12px;
       border-radius: 6px;
+      margin-bottom: 10px;
     }
 
-    .sem-registros {
-      text-align: center;
-      color: gray;
-      margin-top: 20px;
+    .registro strong {
+      color: #333;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Histórico de Recargas</h2>
-    <div id="listaHistorico"></div>
+    <div id="historicoContainer"></div>
   </div>
 
   <script>
     const telefone = localStorage.getItem('usuario_logado');
+    const historicoContainer = document.getElementById('historicoContainer');
 
     if (!telefone) {
-      document.getElementById('listaHistorico').innerHTML = "<p class='sem-registros'>Nenhum usuário logado.</p>";
+      historicoContainer.innerHTML = "<p>Nenhum usuário logado.</p>";
     } else {
       const historico = JSON.parse(localStorage.getItem('recargas_' + telefone)) || [];
 
       if (historico.length === 0) {
-        document.getElementById('listaHistorico').innerHTML = "<p class='sem-registros'>Nenhuma recarga encontrada.</p>";
+        historicoContainer.innerHTML = "<p>Não há registros de recarga ainda.</p>";
       } else {
-        let html = '';
-        historico.reverse().forEach((recarga, index) => {
-          html += `
-            <div class="registro">
-              <strong>Valor:</strong> ${recarga.valor} MZN<br>
-              <strong>Data:</strong> ${recarga.data}
-            </div>
+        historico.reverse().forEach(registro => {
+          const div = document.createElement('div');
+          div.className = 'registro';
+          div.innerHTML = `
+            <p><strong>Valor:</strong> ${registro.valor} MZN</p>
+            <p><strong>Método:</strong> ${registro.metodo}</p>
+            <p><strong>Data:</strong> ${registro.data}</p>
           `;
+          historicoContainer.appendChild(div);
         });
-        document.getElementById('listaHistorico').innerHTML = html;
       }
     }
   </script>
