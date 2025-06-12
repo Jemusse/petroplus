@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <title>Histórico de Recargas - PEROPLUS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Histórico de Recargas - PETROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
       padding: 20px;
     }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
     h2 {
       text-align: center;
+      color: #007bff;
     }
-    .tabela {
-      max-width: 600px;
-      margin: 30px auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .registro {
+      background: #e9f0ff;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-left: 5px solid #007bff;
+      border-radius: 6px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #007bff;
-      color: white;
+
+    .sem-registros {
+      text-align: center;
+      color: gray;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h2>📜 Histórico de Recargas</h2>
-  <div class="tabela">
-    <table>
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Valor (Mts)</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaHistorico">
-        <!-- Linhas preenchidas via JS -->
-      </tbody>
-    </table>
+  <div class="container">
+    <h2>Histórico de Recargas</h2>
+    <div id="listaHistorico"></div>
   </div>
 
   <script>
-    const telefone = localStorage.getItem('login_telefone');
-    const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
+    const telefone = localStorage.getItem('usuario_logado');
 
-    const tabela = document.getElementById('tabelaHistorico');
-    if (historico.length === 0) {
-      tabela.innerHTML = "<tr><td colspan='2'>Sem recargas ainda.</td></tr>";
+    if (!telefone) {
+      document.getElementById('listaHistorico').innerHTML = "<p class='sem-registros'>Nenhum usuário logado.</p>";
     } else {
-      historico.reverse().forEach(item => {
-        const linha = `<tr><td>${item.data}</td><td>${item.valor.toFixed(2)}</td></tr>`;
-        tabela.innerHTML += linha;
-      });
+      const historico = JSON.parse(localStorage.getItem('recargas_' + telefone)) || [];
+
+      if (historico.length === 0) {
+        document.getElementById('listaHistorico').innerHTML = "<p class='sem-registros'>Nenhuma recarga encontrada.</p>";
+      } else {
+        let html = '';
+        historico.reverse().forEach((recarga, index) => {
+          html += `
+            <div class="registro">
+              <strong>Valor:</strong> ${recarga.valor} MZN<br>
+              <strong>Data:</strong> ${recarga.data}
+            </div>
+          `;
+        });
+        document.getElementById('listaHistorico').innerHTML = html;
+      }
     }
   </script>
 </body>
