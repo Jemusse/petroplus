@@ -2,44 +2,46 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Recarregar - PEROPLUS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recarregar - PETROPLUS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background: #f5f5f5;
+      padding: 20px;
     }
+
     .container {
+      max-width: 400px;
+      margin: auto;
       background: #fff;
-      padding: 30px;
+      padding: 25px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      width: 350px;
     }
+
     h2 {
-      margin-bottom: 20px;
       text-align: center;
+      color: #007bff;
     }
-    input {
+
+    input, button {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
+      margin: 10px 0;
+      font-size: 16px;
       border-radius: 8px;
       border: 1px solid #ccc;
     }
+
     button {
-      width: 100%;
-      padding: 12px;
       background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
     }
+
     button:hover {
       background-color: #0056b3;
     }
@@ -47,36 +49,44 @@
 </head>
 <body>
   <div class="container">
-    <h2>Fazer Recarga</h2>
-    <input type="number" id="valorRecarga" placeholder="Valor (mínimo 10 Mts)" />
-    <button onclick="recarregar()">Confirmar Recarga</button>
+    <h2>Recarregar Conta</h2>
+    <form id="recargaForm">
+      <input type="number" id="valor" placeholder="Insira o valor (MZN)" required />
+      <button type="submit">Confirmar Recarga</button>
+    </form>
   </div>
 
   <script>
-    const telefone = localStorage.getItem('login_telefone');
-    const user = JSON.parse(localStorage.getItem('user_' + telefone));
+    document.getElementById('recargaForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const valor = parseFloat(document.getElementById('valor').value);
+      const telefone = localStorage.getItem('usuario_logado');
 
-    function recarregar() {
-      const valor = parseFloat(document.getElementById('valorRecarga').value);
-      if (isNaN(valor) || valor < 10) {
-        alert("Valor inválido ou menor que 10 Mts.");
+      if (!telefone) {
+        alert('Erro: Nenhum usuário logado.');
         return;
       }
 
+      // Recupera os dados do usuário
+      const userKey = 'user_' + telefone;
+      const userData = JSON.parse(localStorage.getItem(userKey));
+
       // Atualiza saldo
-      user.saldo = parseFloat(user.saldo || 0) + valor;
+      userData.saldo = (userData.saldo || 0) + valor;
 
-      // Adiciona ao histórico
-      const historico = JSON.parse(localStorage.getItem('historico_' + telefone)) || [];
-      historico.push({ valor, data: new Date().toLocaleString() });
-      localStorage.setItem('historico_' + telefone, JSON.stringify(historico));
+      // Salva recarga no histórico
+      const historico = JSON.parse(localStorage.getItem('recargas_' + telefone)) || [];
+      historico.push({
+        valor: valor,
+        data: new Date().toLocaleString()
+      });
 
-      // Salva dados atualizados
-      localStorage.setItem('user_' + telefone, JSON.stringify(user));
-      alert("Recarga realizada com sucesso!");
+      localStorage.setItem('recargas_' + telefone, JSON.stringify(historico));
+      localStorage.setItem(userKey, JSON.stringify(userData));
 
-      window.location.href = "painel.html";
-    }
+      alert('Recarga feita com sucesso!');
+      window.location.href = 'index.html'; // ou painel principal
+    });
   </script>
 </body>
 </html>
