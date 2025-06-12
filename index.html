@@ -96,7 +96,9 @@
     localStorage.setItem('petro_earnings', '0');
     localStorage.setItem('petro_guests', JSON.stringify([]));
     localStorage.setItem('petro_history', JSON.stringify([]));
-    login();
+
+    alert('Usuário registrado com sucesso. Faça login para continuar.');
+    showLogin();
   }
   const login = () => {
     const user = document.getElementById('loginUser').value;
