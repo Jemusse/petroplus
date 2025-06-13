@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SuperGame</title>
+<style>
+  body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 2rem;
+  }
+  #game {
+    margin-top: 2rem;
+  }
+  button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #222;
+    color: white;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #444;
+  }
+  #result {
+    margin-top: 1.5rem;
+    font-size: 2rem;
+    min-height: 2.5rem;
+  }
+</style>
+</head>
+<body>
+  <h1>SuperGame - Aviator Simulado</h1>
+  <div id="game">
+    <button id="playBtn">Jogar</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const playBtn = document.getElementById('playBtn');
+    const resultDiv = document.getElementById('result');
+
+    // Simula um multiplicador entre 1.0 e 5.0
+    function simulateGame() {
+      // Gira um número aleatório entre 1 e 5, com uma casa decimal
+      return (Math.random() * 4 + 1).toFixed(1);
+    }
+
+    playBtn.addEventListener('click', () => {
+      const multiplier = simulateGame();
+      resultDiv.textContent = `Multiplicador: x${multiplier}`;
+    });
+  </script>
+</body>
+</html>
