@@ -2,111 +2,75 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Painel PETROPLUS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aviator Links</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 20px;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 30px;
     }
-    .painel {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .botoes {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
+
+    img {
+      max-width: 100%;
+      height: auto;
       margin-bottom: 20px;
     }
-    .botao {
-      background: #ff6600;
+
+    .button {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #e50914;
       color: white;
       border: none;
-      padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
     }
-    .botao:hover {
-      background: #e65c00;
+
+    .button:hover {
+      background-color: #c40611;
     }
-    .projeto {
-      display: flex;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      overflow: hidden;
-      align-items: center;
+
+    .button.secondary {
+      background-color: #555;
     }
-    .projeto img {
-      width: 150px;
-      height: auto;
-      object-fit: cover;
-    }
-    .descricao {
-      padding: 15px;
-    }
-    .descricao h3 {
-      margin: 0 0 10px;
-      color: #ff6600;
-    }
-    .descricao p {
-      margin: 4px 0;
-    }
-    .valores {
-      font-weight: bold;
-      color: #007700;
-      margin-top: 10px;
+
+    .button.secondary:hover {
+      background-color: #777;
     }
   </style>
 </head>
 <body>
-  <div class="painel">
-    <div class="botoes">
-      <button class="botao" onclick="alert('Navegar para Meus Projetos')">Meus Projetos</button>
-      <button class="botao" onclick="alert('Abrir Menu')">Menu</button>
-      <button class="botao" onclick="alert('Ver Equipe')">Equipe</button>
-      <button class="botao" onclick="alert('Benefícios PETROPLUS: Lucros diários, parcerias sustentáveis, retorno garantido.')">Sobre Nós</button>
-    </div>
 
-    <!-- Projetos ordenados do maior valor para o menor -->
-    <div class="projeto">
-      <img src="https://via.placeholder.com/150x200?text=Projeto+240000" alt="Projeto">
-      <div class="descricao">
-        <h3>Projeto Energia Solar</h3>
-        <p>Duração: 90 dias</p>
-        <p>Rendimento diário: 4000 MZN</p>
-        <p>Renda total: 240000 MZN</p>
-        <div class="valores">MZN 240000</div>
-      </div>
-    </div>
+  <h1>🎮 Aviator - Escolha sua opção</h1>
 
-    <div class="projeto">
-      <img src="https://via.placeholder.com/150x200?text=Projeto+120000" alt="Projeto">
-      <div class="descricao">
-        <h3>Projeto Estufa</h3>
-        <p>Duração: 60 dias</p>
-        <p>Rendimento diário: 2000 MZN</p>
-        <p>Renda total: 120000 MZN</p>
-        <div class="valores">MZN 120000</div>
-      </div>
-    </div>
+  <!-- Imagem ilustrativa -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Aviator_game_logo.png/320px-Aviator_game_logo.png" alt="Imagem Aviator">
 
-    <div class="projeto">
-      <img src="https://via.placeholder.com/150x200?text=Projeto+48000" alt="Projeto">
-      <div class="descricao">
-        <h3>Projeto Agricultura</h3>
-        <p>Duração: 45 dias</p>
-        <p>Rendimento diário: 1067 MZN</p>
-        <p>Renda total: 48000 MZN</p>
-        <div class="valores">MZN 48000</div>
-      </div>
-    </div>
+  <!-- Botões -->
+  <a href="https://txunaplay.com/t28b2ac77" target="_blank">
+    <button class="button">1 - Criar Conta (Txunaplay)</button>
+  </a>
 
-    <!-- Adicione mais projetos aqui com valores menores, seguindo o mesmo padrão -->
-  </div>
+  <a href="https://is.gd/1WQMWs" target="_blank">
+    <button class="button">2 - Acessar Sinais da Txuna Bet</button>
+  </a>
+
+  <a href="https://www.megagamelive.com/affiliates/?btag=2184909" target="_blank">
+    <button class="button">3 - Criar Conta (Megagamelive)</button>
+  </a>
+
+  <button class="button secondary" onclick="alert('⚠️ Ainda não está disponível! Aguarde novidades.')">
+    4 - Acessar Sinais da Megagamelive
+  </button>
+
 </body>
 </html>
