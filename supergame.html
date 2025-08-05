@@ -1,61 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SuperGame</title>
-<style>
-  body {
-    background-color: #121212;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 2rem;
-  }
-  #game {
-    margin-top: 2rem;
-  }
-  button {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #222;
-    color: white;
-    border: 2px solid #fff;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #444;
-  }
-  #result {
-    margin-top: 1.5rem;
-    font-size: 2rem;
-    min-height: 2.5rem;
-  }
-</style>
-</head>
-<body>
-  <h1>SuperGame - Aviator Simulado</h1>
-  <div id="game">
-    <button id="playBtn">Jogar</button>
-    <div id="result"></div>
-  </div>
-
-  <script>
-    const playBtn = document.getElementById('playBtn');
-    const resultDiv = document.getElementById('result');
-
-    // Simula um multiplicador entre 1.0 e 5.0
-    function simulateGame() {
-      // Gira um número aleatório entre 1 e 5, com uma casa decimal
-      return (Math.random() * 4 + 1).toFixed(1);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aviator Links</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 30px;
     }
 
-    playBtn.addEventListener('click', () => {
-      const multiplier = simulateGame();
-      resultDiv.textContent = `Multiplicador: x${multiplier}`;
-    });
-  </script>
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #e50914;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background-color: #c40611;
+    }
+
+    .button.secondary {
+      background-color: #555;
+    }
+
+    .button.secondary:hover {
+      background-color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎮 Aviator - Escolha sua opção</h1>
+
+  <!-- Imagem ilustrativa -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Aviator_game_logo.png/320px-Aviator_game_logo.png" alt="Imagem Aviator">
+
+  <!-- Botões -->
+  <a href="https://txunaplay.com/t28b2ac77" target="_blank">
+    <button class="button">1 - Criar Conta (Txunaplay)</button>
+  </a>
+
+  <a href="https://is.gd/1WQMWs" target="_blank">
+    <button class="button">2 - Acessar Sinais da Txuna Bet</button>
+  </a>
+
+  <a href="https://www.megagamelive.com/affiliates/?btag=2184909" target="_blank">
+    <button class="button">3 - Criar Conta (Megagamelive)</button>
+  </a>
+
+  <button class="button secondary" onclick="alert('⚠️ Ainda não está disponível! Aguarde novidades.')">
+    4 - Acessar Sinais da Megagamelive
+  </button>
+
 </body>
 </html>
