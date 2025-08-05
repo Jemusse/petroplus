@@ -1,91 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Potex.G</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aviator Links</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
+    body {
       font-family: Arial, sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    #timer {
-      background-color: #222;
+      background-color: #000;
       color: #fff;
       text-align: center;
-      padding: 12px;
-      font-size: 22px;
+      padding: 30px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 16px;
       font-weight: bold;
-    }
-    iframe {
-      flex: 1;
-      border: none;
-      width: 100%;
-    }
-    #bottom-bar {
-      display: flex;
-      justify-content: space-between;
-      background-color: #111;
-      color: #fff;
-      padding: 10px;
-      font-size: 18px;
-    }
-    .side {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-    .side span {
-      background: #333;
-      padding: 6px 12px;
-      border-radius: 6px;
-    }
-    .btn {
-      background: #28a745;
-      border: none;
+      background-color: #e50914;
       color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background-color: #c40611;
+    }
+
+    .button.secondary {
+      background-color: #555;
+    }
+
+    .button.secondary:hover {
+      background-color: #777;
     }
   </style>
 </head>
 <body>
-  <div id="timer">00:00:00</div>
 
-  <!-- WebView -->
-  <iframe src="https://is.gd/hHdRiZ"></iframe>
+  <h1>🎮 Aviator - Escolha sua opção</h1>
 
-  <!-- Barra Inferior -->
-  <div id="bottom-bar">
-    <div class="side" id="left-side">
-      <span>4x</span>
-      <span>5x</span>
-      <span>7x</span>
-      <button class="btn">Possível</button>
-    </div>
-    <div class="side" id="right-side">
-      <span>Protex 2.10x</span>
-      <span>Protex 1.50x</span>
-      <span>Protex 2.35x</span>
-    </div>
-  </div>
+  <!-- Imagem ilustrativa -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Aviator_game_logo.png/320px-Aviator_game_logo.png" alt="Imagem Aviator">
 
-  <!-- Script do Timer -->
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('timer').innerText = `🕒 ${hrs}:${mins}:${secs}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+  <!-- Botões -->
+  <a href="https://txunaplay.com/t28b2ac77" target="_blank">
+    <button class="button">1 - Criar Conta (Txunaplay)</button>
+  </a>
+
+  <a href="https://is.gd/1WQMWs" target="_blank">
+    <button class="button">2 - Acessar Sinais da Txuna Bet</button>
+  </a>
+
+  <a href="https://www.megagamelive.com/affiliates/?btag=2184909" target="_blank">
+    <button class="button">3 - Criar Conta (Megagamelive)</button>
+  </a>
+
+  <button class="button secondary" onclick="alert('⚠️ Ainda não está disponível! Aguarde novidades.')">
+    4 - Acessar Sinais da Megagamelive
+  </button>
+
 </body>
 </html>
