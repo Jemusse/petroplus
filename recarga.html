@@ -10,66 +10,70 @@
       background-color: #000;
       color: #fff;
       text-align: center;
-      padding: 30px;
+      padding: 30px 15px;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 25px;
     }
 
     img {
-      max-width: 100%;
+      width: 250px;
       height: auto;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
     }
 
     .button {
       display: block;
-      width: 90%;
-      max-width: 300px;
-      margin: 10px auto;
+      width: 100%;
+      max-width: 320px;
+      margin: 12px auto;
       padding: 15px;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: bold;
-      background-color: #e50914;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .button:hover {
-      background-color: #c40611;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
-    .button.secondary {
-      background-color: #555;
-    }
-
-    .button.secondary:hover {
-      background-color: #777;
-    }
+    .red { background-color: #ff1a1a; }
+    .green { background-color: #28a745; }
+    .blue { background-color: #007bff; }
+    .purple { background-color: #8e44ad; }
   </style>
 </head>
 <body>
 
-  <h1>🎮 Aviator - Escolha sua opção</h1>
+  <h1>🎮 Bem-vindo ao Aviator</h1>
 
-  <!-- Imagem ilustrativa -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Aviator_game_logo.png/320px-Aviator_game_logo.png" alt="Imagem Aviator">
+  <!-- Imagem do Aviator -->
+  <img src="https://i.postimg.cc/FKK2VtbK/aviator-plane.png" alt="Aviator Imagem">
 
-  <!-- Botões -->
+  <!-- Botões coloridos e intercalados -->
   <a href="https://txunaplay.com/t28b2ac77" target="_blank">
-    <button class="button">1 - Criar Conta (Txunaplay)</button>
+    <button class="button red">Criar Conta (Txunaplay)</button>
   </a>
 
   <a href="https://is.gd/1WQMWs" target="_blank">
-    <button class="button">2 - Acessar Sinais da Txuna Bet</button>
+    <button class="button green">Acessar Sinais da Txuna Bet</button>
   </a>
 
   <a href="https://www.megagamelive.com/affiliates/?btag=2184909" target="_blank">
-    <button class="button">3 - Criar Conta (Megagamelive)</button>
+    <button class="button blue">Criar Conta (Megagamelive)</button>
   </a>
 
-  <button class="button secondary" onclick="alert('⚠️ Ainda não está disponível! Aguarde novidades.')">
-    4 - Acessar Sinais da Megagamelive
+  <button class="button purple" onclick="alert('⚠️ Ainda não está disponível! Aguarde novidades.')">
+    Acessar Sinais da Megagamelive
   </button>
 
 </body>
